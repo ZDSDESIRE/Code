@@ -20,6 +20,10 @@
 > [2、js检查元素是否为数字](https://www.jianshu.com/p/6af008e5fabb)
 >
 
+##### SQL
+> [1、SQL常用语句](https://www.jianshu.com/p/e3655833ff6d)
+> 
+
 ##### DevTools
 
 Git：

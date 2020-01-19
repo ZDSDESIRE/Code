@@ -108,3 +108,6 @@ $ git merge 分支名
 ```
 
 ##### 4、git 本地仓库 push 到 github / gitlab 远程仓库
+
+
+#### 注：[Git commit 相关规范](commit.md)

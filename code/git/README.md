@@ -9,16 +9,46 @@ $ git config --system --unset credential.helper
 ```
 #### 2、git 仓库管理（本地和远程）
 
-##### git 查看本地仓库缓存区状态
+##### git 查看本地仓库缓存区状态（即工作区）
 
 ```git
 $ git status
+```
+```git
+$ git status -s
+$ git status --show-stash
+```
+```git
+$ git checkout
+```
+```git
+# 切换到对应记录，基于分支进行提交、标签
+$ git checkout dev
+$ git checkout origin/test
+$ git checkout --track origin/feature-test
+$ git checkout -b testbranch
+$ git checkout -- file
+$ git checkout .
+$ git checkout -
 ```
 
 ##### git 查看版本演变历史
 
 ```git
 $ git log
+```
+
+```git
+# 输出概要日志
+$ git log --online
+# 上述命令等同于以下命令
+$ git log --pretty=online --abbrev--commit
+
+# 指定输出最近几个的提交日记
+$ git log --online -5
+
+# 提供类似 GUI 工具的 log 展示
+$ git log --graph --date=relative --pretty=tformat: '%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
 ```
 
 ##### git 查看远程仓库
@@ -107,4 +137,39 @@ $ git checkout master // 切换回主分支
 $ git merge 分支名
 ```
 
-##### 4、git 本地仓库 push 到 github / gitlab 远程仓库
+#### 4、git 提交
+```git
+# git commit
+```
+```git
+$ git commit --amend --no-edit
+$ git commit --no-verify -m "xxx"
+$ git commit -t templateFile
+$ git commit -F
+```
+
+#### 5、git 代码回滚
+```git
+$ git reset
+```
+```git
+$ git reset --hard commit_sha1
+$ git reset --soft commit_sha1
+$ git reset --soft HEAD~1
+$ git reset --mixed commit_sha1
+$ git reset --merge commit_sha1
+$ git reset --keep commit_sha1
+```
+##### 用于 master 的代码回滚
+```git
+$ git revert
+```
+```git
+# 多人协作时，可平稳地回滚代码，并保留提交记录，尽量避免冲突。
+$ git revert commit_sha1
+```
+
+#### 6、git 变基
+
+
+#### 8、git 本地仓库 push 到 github / gitlab 远程仓库

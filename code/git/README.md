@@ -170,6 +170,22 @@ $ git revert commit_sha1
 ```
 
 #### 6、git 变基
+```git
+$ git rebase
+```
+```git
+$ git rebase -i git-sha1|branch(HEAD)
+$ git rebase --continue
+$ git rebase --skip
+$ git rebase --abort
+```
 
+#### 7、git 合并
+```git
+$ git merge
+```
+```git
+$ git merge --no-ff branchName
+```
 
 #### 8、git 本地仓库 push 到 github / gitlab 远程仓库

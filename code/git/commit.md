@@ -24,7 +24,7 @@ type 包含以下几种：
 * refactor：某个已有功能重构
 * build：构建工具或构建过程的变动，如：webpack升级、gulp替换为webpack等
 
-##### 参考格式：
+##### 参考格式
 
 ```text
 <type>：

@@ -105,27 +105,35 @@ $ git remote show origin
 ##### git 新建分支
 
 ```git
-$ git branch 分支名
+$ git branch <branchName>
 ```
 
 ##### git 切换分支
 
 ```git
-$ git checkout 分支名
+$ git checkout <branchName>
 ```
 
 ##### git 删除本地分支
 
 ```git
-$ git branch -d 分支名
+$ git branch -d <branchName>
 ```
 
 ##### git 删除远程分支
 
 ```git
-$ git push origin -d 分支名
+$ git push origin -d <branchName>
 # 或者
-$ git push origin --delete 分支名
+$ git push origin --delete <branchName>
+```
+
+或
+
+```git
+# 先删除本地远程分支，后推送至服务器
+$ git branch -d -r <branchname>
+$ git push origin:<branchname>
 ```
 
 ##### git 更新本地分支（远程已删除）
@@ -138,10 +146,66 @@ $ git remote prune origin
 
 ```git
 $ git checkout master // 切换回主分支
-$ git merge 分支名
+$ git merge <branchName>
 ```
 
-#### 4、git 提交
+##### git 重命名本地分支
+
+```git
+$ git branch -m <oldbranch> <newbranch>
+```
+
+#### 4、git 拉取（git fetch & pull）
+
+##### git fetch
+
+```git
+# 拉取远程主机所有的更新到本地远程仓库
+$ git fetch <远程主机名>
+```
+
+```git
+# 取回特定分支的更新
+$ git fetch <远程主机名> <分支名> // 注意之间有空格
+
+如：
+# 取回 origin 主机的 master 分支
+$ git fetch origin master
+```
+
+取回的更新要在本地主机上以“远程主机名/分支名”的形式读取，如 origin/master。
+取回更新后，会返回一个 FETCH_HEAD（指某个 branch 在远程主机上的最新状态），可以在本地查看拉取后的最新信息：
+
+```git
+$ git log -p FETCH_HEAD
+```
+
+后续可检查拉取的代码是否有冲突，详细步骤如下：
+
+```git
+## 在本地新建一个temp分支，并将远程origin仓库的master分支代码下载到本地temp分支；
+$ git fetch origin master:temp
+
+## 比较本地代码与刚刚从远程下载下来的代码的区别；
+$ git diff temp
+
+## 合并temp分支到本地的master分支;
+$ git merge temp
+
+## 如果不想保留temp分支，删除;
+$ git branch -d temp
+```
+
+##### git pull
+
+```git
+# 从远程主机上拉取最新内容，并直接合并，可以理解为：git pull = git fetch + git merge，但这样容易产生冲突，需要手动解决。
+$ git pull <远程主机名> <远程分支名>:<本地分支名>
+```
+
+如果需要有选择的合并 git fetch 是更好的选择。效果相同时git pull 将更为快捷。
+
+#### 5、git 提交
 
 ```git
 # git commit
@@ -154,9 +218,9 @@ $ git commit -t templateFile
 $ git commit -F
 ```
 
-#### 注：[Git commit 相关规范](commit.md)
+##### 注：[Git commit 相关规范](commit.md)
 
-#### 5、git 代码回滚
+#### 6、git 代码回滚
 
 ```git
 $ git reset
@@ -182,7 +246,7 @@ $ git revert
 $ git revert commit_sha1
 ```
 
-#### 6、git 变基
+#### 7、git 变基
 
 ```git
 $ git rebase
@@ -195,7 +259,7 @@ $ git rebase --skip
 $ git rebase --abort
 ```
 
-#### 7、git 合并
+#### 8、git 合并
 
 ```git
 $ git merge
@@ -205,5 +269,31 @@ $ git merge
 $ git merge --no-ff branchName
 ```
 
-#### 8、git 本地仓库 push 到 github / gitlab 远程仓库
+#### 9、git 本地仓库 push 到 github / gitlab 远程仓库
 
+#### 补充部分
+
+git 的一些选项说明：
+
+```git
+-d
+--delete：删除
+
+-D
+--delete --force的快捷键
+
+-f
+--force：强制
+
+-m
+--move：移动或重命名
+
+-M
+--move --force的快捷键
+
+-r
+--remote：远程
+
+-a
+--all：所有
+```

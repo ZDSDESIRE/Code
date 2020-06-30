@@ -3,49 +3,47 @@
 #### 1. Windows and Linux
 
 **标签和窗口快捷方式**
-
-|                     Action                     |             Shortcut              |
+| Action | Shortcut |
 | :--------------------------------------------: | :-------------------------------: |
-|             打开一个新窗口（常用）             |             Ctrl + n              |
-|           在隐身模式下打开一个新窗口           |         Ctrl + Shift + n          |
-|    打开一个新标签，然后跳转到该标签（常用）    |             Ctrl + t              |
-|      重新打开最后关闭的标签，然后跳转到它      |         Ctrl + Shift + t          |
-|         跳转到下一个打开的标签（常用）         |     Ctrl + Tab or Ctrl + PgDn     |
-|         跳转到上一个打开的标签（常用）         | Ctrl + Shift + Tab or Ctrl + PgUp |
-|             跳转到特定标签（常用）             |     Ctrl + 1 through Ctrl + 8     |
-|           跳转到最后一个标签（常用）           |             Ctrl + 9              |
-|          在当前标签中打开主页（常用）          |            Alt + Home             |
-| 从当前标签中的浏览历史记录中打开上一页（常用） |         Alt + Left arrow          |
-| 在当前标签中打开浏览历史记录中的下一页（常用） |         Alt + Right arrow         |
-|              关闭当前标签（常用）              |       Ctrl + w or Ctrl + F4       |
-|                  关闭当前窗口                  |   Ctrl + Shift + w or Alt + F4    |
-|                 最小化当前窗口                 |          Alt + Space + n          |
-|                 最大化当前窗口                 |          Alt + Space + x          |
-|               退出 Google Chrome               |         Ctrl + Shift + q          |
-|            退出 Google Chrome（新）            |          Alt + f then x           |
+| 打开一个新窗口（常用） | Ctrl + n |
+| 在隐身模式下打开一个新窗口 | Ctrl + Shift + n |
+| 打开一个新标签，然后跳转到该标签（常用） | Ctrl + t |
+| 重新打开最后关闭的标签，然后跳转到它 | Ctrl + Shift + t |
+| 跳转到下一个打开的标签（常用） | Ctrl + Tab or Ctrl + PgDn |
+| 跳转到上一个打开的标签（常用） | Ctrl + Shift + Tab or Ctrl + PgUp |
+| 跳转到特定标签（常用） | Ctrl + 1 through Ctrl + 8 |
+| 跳转到最后一个标签（常用） | Ctrl + 9 |
+| 在当前标签中打开主页（常用） | Alt + Home |
+| 从当前标签中的浏览历史记录中打开上一页（常用） | Alt + Left arrow |
+| 在当前标签中打开浏览历史记录中的下一页（常用） | Alt + Right arrow |
+| 关闭当前标签（常用） | Ctrl + w or Ctrl + F4 |
+| 关闭当前窗口 | Ctrl + Shift + w or Alt + F4 |
+| 最小化当前窗口 | Alt + Space + n |
+| 最大化当前窗口 | Alt + Space + x |
+| 退出 Google Chrome | Ctrl + Shift + q |
+| 退出 Google Chrome（新） | Alt + f then x |
 
 **功能快捷方式**
 注：补充一个官网没有的,在搜索状态下按 F3 可以跳到下一个搜索词,按 Shift+ F3 跳到上一个搜索词
-
-|                 Action                 |              Shortcut               |
+| Action | Shortcut |
 | :------------------------------------: | :---------------------------------: |
-|            打开 Chrome 菜单            |  Alt + f or Alt + e or F10 + Enter  |
-|        显示或隐藏书签栏（常用）        |          Ctrl + Shift + b           |
-|             打开书签管理器             |          Ctrl + Shift + o           |
-|  在新标签中打开“历史记录”页面（常用）  |              Ctrl + h               |
-|        在新标签中打开“下载”页面        |              Ctrl + j               |
-|         打开 Chrome 任务管理器         |             Shift + Esc             |
-| 将焦点设置在 Chrome 工具栏中的第一项上 |           Shift + Alt + t           |
-| 将焦点设置在 Chrome 工具栏中的最后一项 |                 F10                 |
-| 将焦点切换到未聚焦的对话框（如果显示） |                 F6                  |
-|    打开查找栏以搜索当前页面（常用）    |           Ctrl + f or F3            |
-| 跳转到查找栏搜索的下一个匹配项（常用） |        Ctrl + g（但推荐 F3）        |
+| 打开 Chrome 菜单 | Alt + f or Alt + e or F10 + Enter |
+| 显示或隐藏书签栏（常用） | Ctrl + Shift + b |
+| 打开书签管理器 | Ctrl + Shift + o |
+| 在新标签中打开“历史记录”页面（常用） | Ctrl + h |
+| 在新标签中打开“下载”页面 | Ctrl + j |
+| 打开 Chrome 任务管理器 | Shift + Esc |
+| 将焦点设置在 Chrome 工具栏中的第一项上 | Shift + Alt + t |
+| 将焦点设置在 Chrome 工具栏中的最后一项 | F10 |
+| 将焦点切换到未聚焦的对话框（如果显示） | F6 |
+| 打开查找栏以搜索当前页面（常用） | Ctrl + f or F3 |
+| 跳转到查找栏搜索的下一个匹配项（常用） | Ctrl + g（但推荐 F3） |
 | 跳转到查找栏搜索的上一个匹配项（常用） | Ctrl + Shift + g（但推荐 Shift+F3） |
-|             打开开发者工具             |       Ctrl + Shift + j or F12       |
-|         打开“清除浏览数据”选项         |        Ctrl + Shift + Delete        |
-|    在新标签页中打开 Chrome 帮助中心    |                 F1                  |
-|      登录其他用户或以访客身份浏览      |          Ctrl + Shift + m           |
-|               打开反馈表               |           Alt + Shift + i           |
+| 打开开发者工具 | Ctrl + Shift + j or F12 |
+| 打开“清除浏览数据”选项 | Ctrl + Shift + Delete |
+| 在新标签页中打开 Chrome 帮助中心 | F1 |
+| 登录其他用户或以访客身份浏览 | Ctrl + Shift + m |
+| 打开反馈表 | Alt + Shift + i |
 
 **地址栏快捷方式**
 | Action | Shortcut |
@@ -199,3 +197,15 @@
 **注：**
 版权声明：本文为 CSDN 博主「One_Way」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/wangweiwells/article/details/88606142
+
+<style>
+table th:first-of-type {
+    width: 40%;
+}
+table th:nth-of-type(2) {
+    width: 50%;
+}
+/* table th:nth-of-type(3) {
+    width: 50%;
+} */
+</style>

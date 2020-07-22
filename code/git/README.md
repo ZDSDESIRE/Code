@@ -55,7 +55,7 @@ $ git log --online -5
 $ git log --graph --date=relative --pretty=tformat: '%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
 ```
 
-##### git 查看远程仓库
+##### git 查看远程仓库连接情况
 
 ```git
 $ git remote -v
@@ -63,13 +63,13 @@ $ git remote -v
 
 ##### git 修改远程仓库地址
 
-直接修改：
+- 直接修改：
 
 ```git
 $ git remote set-url origin <url>
 ```
 
-先删后加：
+- 先删后加：
 
 ```git
 $ git remote rm origin
@@ -183,16 +183,16 @@ $ git log -p FETCH_HEAD
 后续可检查拉取的代码是否有冲突，详细步骤如下：
 
 ```git
-## 在本地新建一个temp分支，并将远程origin仓库的master分支代码下载到本地temp分支；
+# 在本地新建一个 temp 分支，并将远程 origin 仓库的 master 分支代码下载到本地 temp 分支；
 $ git fetch origin master:temp
 
-## 比较本地代码与刚刚从远程下载下来的代码的区别；
+# 比较本地代码与刚刚从远程下载下来的代码的区别；
 $ git diff temp
 
-## 合并temp分支到本地的master分支;
+# 合并 temp 分支到本地的 master 分支;
 $ git merge temp
 
-## 如果不想保留temp分支，删除;
+# 如果不想保留 temp 分支，删除;
 $ git branch -d temp
 ```
 
@@ -203,7 +203,7 @@ $ git branch -d temp
 $ git pull <远程主机名> <远程分支名>:<本地分支名>
 ```
 
-如果需要有选择的合并 git fetch 是更好的选择。效果相同时git pull 将更为快捷。
+如果需要有选择的合并 git fetch 是更好的选择。效果相同时 git pull 将更为快捷。
 
 #### 5、git 提交
 
@@ -256,7 +256,7 @@ $ git rebase
 $ git rebase -i git-sha1|branch(HEAD)
 $ git rebase --continue
 $ git rebase --skip
-$ git rebase --abort
+$ git rebase --abort // 放弃当前
 ```
 
 #### 8、git 合并

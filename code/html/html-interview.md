@@ -1,6 +1,6 @@
-### 5大类常见的HTTP面试题
+### 5 大类常见的 HTTP 面试题
 
-![HTTP面试题](https://upload-images.jianshu.io/upload_images/9278575-ed885c4554f3ccf1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![HTTP 面试题](https://upload-images.jianshu.io/upload_images/9278575-ed885c4554f3ccf1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 #### 一、HTTP 基本概念
 
@@ -22,10 +22,10 @@ HTTP 常见的状态码有哪些？
 
 ![五大类 HTTP 状态码](https://upload-images.jianshu.io/upload_images/9278575-54216c05de054267.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-*1xx*
+**1xx**
 该类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。
 
-*2xx*
+**2xx**
 该类状态码表示服务器成功地处理了客户端的请求。
 
 【200 OK】是最常见的成功状态码，表示一切正常。如果是非 HEAD 请求，服务器返回的响应头都会有 body 数据。
@@ -34,7 +34,7 @@ HTTP 常见的状态码有哪些？
 
 【206 Partial Content】是应用于 HTTP 分块下载或断电续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。
 
-*3xx*
+**3xx**
 该类状态码表示客户端请求的资源发生了变动，需要客户端使用新的 URL 重新发送请求获取资源（重定向）。
 
 【301 Moved Permanently】表示永久重定向，说明请求的资源已经不存在了，需改用新的 URL 再次访问。
@@ -45,7 +45,7 @@ HTTP 常见的状态码有哪些？
 
 【304 Not Modified】不具有跳转的含义，表示资源为修改，重定向已存在的缓冲文件，也称之为缓存重定向，用于缓存控制。
 
-*4xx*
+**4xx**
 该类状态码表示客户端发送的报文有误，服务器无法处理，也就是错误码的含义。
 
 【400 Bad Request】表示客户端请求的报文有错误，但只是个笼统的错误。
@@ -54,7 +54,7 @@ HTTP 常见的状态码有哪些？
 
 【404 Not Found】表示请求的资源在服务器上不存在或未找到，所以无法提供给客户端。
 
-*5xx*
+**5xx**
 该类状态码表示客户端请求报文正确，但是服务器处理时内部发生了错误，属于服务器端的错误码。
 
 【500 Internal Server Error】与 400 类似，只是个笼统的通用错误码，服务器发生了什么错误，并不知道。
@@ -69,28 +69,28 @@ HTTP 常见的状态码有哪些？
 HTTP 常见字段有哪些？
 ```
 
-*Host*
+**Host**
 客户端发送请求时，host 用来指定服务器的域名。有了 host 字段，就可将请求发送到同一台服务器上的不同网站。
 
 ```http
 Host: www.example.com
 ```
 
-*Content-Length 字段*
+_Content-Length 字段_
 该字段用于在服务器返回数据时，表明本次回应的数据的长度。
 
 ```http
 Content-Length: 1000
 ```
 
-*Connection 字段*
+_Connection 字段_
 该字段最常用于客户端要求服务器使用 TCP 持久连接，以便于其他请求复用。
 
 ```http
 Connection: keep-alive
 ```
 
-*Content-Type 字段*
+_Content-Type 字段_
 该字段用于服务器响应时，告之客户端，本次数据的格式。
 
 ```http
@@ -103,7 +103,7 @@ Content-Type: text/html; charset=utf-8
 Accept: */*
 ```
 
-*Content-Encoding 字段*
+_Content-Encoding 字段_
 该字段说明数据的压缩方法。表明服务器返回的数据使用了什么压缩格式。
 
 ```http
@@ -122,7 +122,7 @@ Accept-Encoding: gzip, deflate
 说一下 GET 和 POST 的区别？
 ```
 
-GET方法的含义是请求从服务器获取资源，这个资源可以是静态的文本、页面、图片视频等。
+GET 方法的含义是请求从服务器获取资源，这个资源可以是静态的文本、页面、图片视频等。
 
 而 POST 方法则是相反的操作，它向 URL 指定的资源提交数据，数据就放在报文的 body 里面。
 
@@ -135,3 +135,18 @@ GET 和 POST 方法都是安全和幂等的嘛？
 
 GET 方法是只读操作，故是安全且幂等的。
 POST 方法存在提交数据的操作，会修改服务器上的资源，所以并非安全的，而且多次提交数据会创建多个资源，所以也并非幂等的。
+
+#### HTTP 特性
+
+```text
+你知道的 HTTP(1.1) 的优点有哪些，怎么体现的？
+```
+
+HTTP 最凸出的优点是简单、灵活和易于扩展、应用广泛和跨平台。
+
+_1、简单_
+HTTP 基本的报文格式是 header + body，头部信息也是 key-value 简单文本的形式，易于理解，降低了学习和使用的门槛。
+
+_2、灵活和易于扩展_
+HTTP 协议里的各类请求方法、URI/URL、状态码、头字段等每个组成允许开发人员自定义和扩充。同时 HTTP 由于工作在应用层（OSI 第七层），则它下层可以随意变化。
+HTTPS 也就是在 HTTP 与 TCP 层之间增加了 SSL/TLS 安全传输层，HTTP/3 甚至把 TCPP 层换成了基于 UDP 的 QUIC。

@@ -23,6 +23,88 @@
 
 #### 二、SQL 基本操作
 
+**创建表与更新表**
+
+```sql
+# 创建班级表
+create table class (
+  id int(11) not null auto_increment,
+  name varchar(50) not null,
+  primary key (id)
+);
+
+# 创建学生表
+create table student (
+  id int(11) not null auto_increment,
+  name varchar(50) not null,
+  number smllint defaullt 20,
+  age smallint default 20,
+  sex enum('male', 'famale'),
+  score tinyint comment '入学成绩',
+  class_id int(11),
+  createTime timestamp default current_timestamp,
+  primary key (id),
+  foreign key (class_id) references class (id) // 通过 class_id 关联 class 表
+);
+
+# 根据旧表创建新表
+create table student_copy as select * from student;
+
+# 删除 age 列
+alter table student drop column age;
+
+# 添加 age 列
+alter table student add column age smallint;
+alter table student add column age smallint not null after number; // 在 number 列后添加 age 列（默认值不为 null）
+
+# 删除表
+drop table student_copy;
+```
+
+**插入数据**
+可以采用以下方法插入一条数据，不过严重依赖表中列的顺序关系，推荐指定列名插入数据，并且可以插入部分列。
+
+```sql
+# 只插入部分字段值
+insert into class (name) values ('软件工程'), ('市场营销'); // 推荐
+
+insert into student (name, number, age, sex, score, class_id) values ('张三', 1, 21, 'male', 100, 1);
+insert into student (name, number, age, sex, score, class_id) values ('李四', 2, 22, 'male', 98, 1);
+insert into student (name, number, age, sex, score, class_id) values ('王五', 3, 22, 'male', 99, 1);
+insert into student (name, number, age, sex, score, class_id) values ('燕七', 4, 21, 'female', 34, 2);
+insert into student (name, number, age, sex, score, class_id) values ('林仙儿', 5, 23, 'female', 78, 2);
+insert into student (name, number, age, sex, score, class_id) values('花无缺', 6, 25, 'male', 90, 1);
+
+# 一次性插入所有字段值
+insert into student values('陆小凤', 7, 24, 'female', 96, 2，...); // 不推荐。除了要注意字段值的先后顺序，还必须包含全部字段的值
+
+# 使用 set 子句
+insert into student set name = 'Kobe', number = 8, age = 24, sex = 'male', score = 99, class_id = 1;
+```
+
+**修改数据**
+
+1. 更新
+   alter 命令用于修改表结构（含修改字段名、调整字段顺序等），update 命令用于修改或更新表的数据（值）
+
+```sql
+# 修改张三的班级
+update student set class_id = 2 where name = '张三';
+```
+
+2. 删除
+
+```sql
+# 删除张三的数据
+delete from student where name = '张三';
+
+# 删除表中所有数据
+delete from student;
+
+# 更快地删除表中所有数据
+truncate table student;
+```
+
 **检索数据**
 
 ```sql
@@ -39,37 +121,36 @@ select * from student;
 select distinct class from student;
 
 # 检索列-选择区间
-# offset 基数为0，所以 `offset 1` 代表从第2行开始
+# offset 基数为0，所以 `offset 1` 代表从第 2 行开始
 select * from student limit 1, 10;
 select * from student limit 10 offset 1;
 ```
 
 **排序**
-默认排序是 ASC，所以一般升序的时候不需指定，降序的关键字是 DESC。使用 B-Tree 索引可以提高排序性能，但只限最左匹配。关于索引可以查看以下 FAQ。
+默认排序是 ASC，所以一般升序的时候不需指定，降序的关键字是 DESC。使用 B-Tree 索引可以提高排序性能，但只限最左匹配。关于索引可以查看以下 [FAQ](#四faq)。
 
 ```sql
-# 检索单列
-select name from student;
+# 单列排序
+select * from student order by age; // 默认升序
+select * from student order by age desc; // 降序
 
-# 检索多列
-select name, age, class from student;
+# 多列排序
+# 添加索引 (score, name) 可以提高排序性能
+# 但是索引 (name, score) 对性能毫无帮助，此谓最左匹配
+select * from student order by score, age; // 默认先按前者升序排序
+select * from student order by score desc, age; // 先按前者降序，再后者升序进行排序
 
-# 检索所有列
-select * from student;
+# 自定义排序
+select * from student order by field(`score`, 98, 100, 99), age desc; // 使用"field()"函数，可指定顺序。
 
-# 对某列去重
-select distinct class from student;
-
-# 检索列-选择区间
-# offset 基数为0，所以 `offset 1` 代表从第2行开始
-select * from student limit 1, 10;
-select * from student limit 10 offset 1;
+# 其他条件排序
+select * from student order by score < 99, if(score < 99, 0, score), score desc; // 先按大于等于 99 升序，再按小于 99 降序，支持分页。
 ```
 
 **数据过滤**
 
 ```sql
-# 找到学号为1的学生
+# 找到学号为 1 的学生
 select * from student where number = 1;
 
 # 找到学号为在 [1, 10] 的学生(闭区间)
@@ -79,10 +160,10 @@ select * from student where number between 1 and 10;
 # 注意不能使用 =
 select * from student where email is null;
 
-# 找到一班中大于23岁的学生
+# 找到一班中大于 23 岁的学生
 select * from student where class_id = 1 and age > 23;
 
-# 找到一班或者大于23岁的学生
+# 找到一班或者大于 23 岁的学生
 select * from student where class_id = 1 or age > 22;
 
 # 找到一班与二班的学生
@@ -183,67 +264,6 @@ select name, class.name from student
 left join class on student.class_id = class.id;
 ```
 
-**插入数据**
-可以采用以下方法插入一条数据，不过严重依赖表中列的顺序关系，推荐指定列名插入数据，并且可以插入部分列。
-
-```sql
-# 插入一条数据
-insert into student values(8, '陆小凤', 24, 1, 3);
-
-insert into student(name, age, sex, class_id)
-values(9, '花无缺', 25, 1, 3);
-```
-
-**修改数据**
-1、更新
-
-```sql
-# 修改张三的班级
-update student set class_id = 2 where name = '张三';
-```
-
-2、删除
-
-```sql
-# 删除张三的数据
-delete from student where name = '张三';
-
-# 删除表中所有数据
-delete from student;
-
-# 更快地删除表中所有数据
-truncate table student;
-```
-
-**创建表与更新表**
-
-```sql
-# 创建学生表
-create table student (
-  id int(11) not null auto_increment,
-  name varchar(50) not null,
-  age smallint default 20,
-  sex enum('male', 'famale'),
-  score tinyint comment '入学成绩',
-  class_id int(11),
-  createTime timestamp default current_timestamp,
-  primary key (id),
-  foreign key (class_id) references class (id)
-);
-
-# 根据旧表创建新表
-create table student_copy as select * from student;
-
-# 删除 age 列
-alter table student drop column age;
-
-# 添加 age 列
-alter table student add column age smallint;
-
-# 删除学生表
-drop table student;
-```
-
 **视图**
 视图是一种虚拟的表，便于更好地在多个表中检索数据，视图也可以作写操作，不过最好作为只读。在需要多个表联接的时候可以使用视图。
 
@@ -257,15 +277,16 @@ select * from v_student_with_classname;
 ```
 
 **约束**
-1、primiry key
-任意两行绝对没有相同的主键，且任一行不会有两个主键且主键绝不为空。使用主键可以加快索引。
+
+1. primiry key
+   任意两行绝对没有相同的主键，且任一行不会有两个主键且主键绝不为空。使用主键可以加快索引。
 
 ```sql
 alter table student add constraint primary key (id);
 ```
 
-2、foreign key
-外键可以保证数据的完整性。有以下两种情况。
+2. foreign key
+   外键可以保证数据的完整性。有以下两种情况。
 
 - 插入张三丰 5 班到 student 表中会失败，因为 5 班在 class 表中不存在。
 - class 表删除 3 班会失败，因为陆小凤和楚留香还在 3 班。
@@ -275,15 +296,15 @@ alter table student add constraint
 foreign key (class_id) references class (id);
 ```
 
-3、unique key
-唯一索引保证该列值是唯一的，但可以允许有 null。
+1. unique key
+   唯一索引保证该列值是唯一的，但可以允许有 null。
 
 ```sql
 alter table student add constraint unique key (name);
 ```
 
-4、check
-检查约束可以使列满足特定的条件，如果学生表中所有的人的年龄都应该大于 0。
+4. check
+   检查约束可以使列满足特定的条件，如果学生表中所有的人的年龄都应该大于 0。
 
 > 不过很可惜 mysql 不支持，可以使用触发器代替
 
@@ -291,8 +312,8 @@ alter table student add constraint unique key (name);
 alter table student add constraint check (age > 0);
 ```
 
-5、index
-索引可以更快地检索数据，但是降低了更新操作的性能。
+5. index
+   索引可以更快地检索数据，但是降低了更新操作的性能。
 
 ```sql
 create index index_on_student_name on student (name);

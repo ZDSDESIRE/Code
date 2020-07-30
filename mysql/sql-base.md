@@ -31,7 +31,7 @@ create table class (
   id int(11) not null auto_increment,
   name varchar(50) not null,
   primary key (id)
-);
+) CHARACTER SET = utf8mb4; // 创建表的同时指定其字符集
 
 # 创建学生表
 create table student (
@@ -45,7 +45,7 @@ create table student (
   createTime timestamp default current_timestamp,
   primary key (id),
   foreign key (class_id) references class (id) // 通过 class_id 关联 class 表
-);
+) CHARACTER SET = utf8mb4;
 
 # 根据旧表创建新表
 create table student_copy as select * from student;
@@ -65,8 +65,8 @@ drop table student_copy;
 可以采用以下方法插入一条数据，不过严重依赖表中列的顺序关系，推荐指定列名插入数据，并且可以插入部分列。
 
 ```sql
-# 只插入部分字段值
-insert into class (name) values ('软件工程'), ('市场营销'); // 推荐
+# 只插入部分字段值（推荐）
+insert into class (name) values ('软件工程'), ('市场营销');
 
 insert into student (name, number, age, sex, score, class_id) values ('张三', 1, 21, 'male', 100, 1);
 insert into student (name, number, age, sex, score, class_id) values ('李四', 2, 22, 'male', 98, 1);
@@ -75,8 +75,8 @@ insert into student (name, number, age, sex, score, class_id) values ('燕七', 
 insert into student (name, number, age, sex, score, class_id) values ('林仙儿', 5, 23, 'female', 78, 2);
 insert into student (name, number, age, sex, score, class_id) values('花无缺', 6, 25, 'male', 90, 1);
 
-# 一次性插入所有字段值
-insert into student values('陆小凤', 7, 24, 'female', 96, 2，...); // 不推荐。除了要注意字段值的先后顺序，还必须包含全部字段的值
+# 一次性插入所有字段值（不推荐。除了要注意字段值的先后顺序，还必须包含全部字段的值）
+insert into student values('陆小凤', 7, 24, 'female', 96, 2，...);
 
 # 使用 set 子句
 insert into student set name = 'Kobe', number = 8, age = 24, sex = 'male', score = 99, class_id = 1;
@@ -87,23 +87,23 @@ insert into student set name = 'Kobe', number = 8, age = 24, sex = 'male', score
 1. 更新
    alter 命令用于修改表结构（含修改字段名、调整字段顺序等），update 命令用于修改或更新表的数据（值）
 
-```sql
-# 修改张三的班级
-update student set class_id = 2 where name = '张三';
-```
+   ```sql
+   # 修改张三的班级
+   update student set class_id = 2 where name = '张三';
+   ```
 
 2. 删除
 
-```sql
-# 删除张三的数据
-delete from student where name = '张三';
+   ```sql
+   # 删除张三的数据
+   delete from student where name = '张三';
 
-# 删除表中所有数据
-delete from student;
+   # 删除表中所有数据
+   delete from student;
 
-# 更快地删除表中所有数据
-truncate table student;
-```
+   # 更快地删除表中所有数据
+   truncate table student;
+   ```
 
 **检索数据**
 
@@ -174,7 +174,8 @@ select * from student where class_id not in (1, 2);
 ```
 
 **计算字段**
-CONCAT
+
+- CONCAT
 
 ```sql
 select concat(name, '(', age, ')') as nameWithAge from student;
@@ -182,7 +183,7 @@ select concat(name, '(', age, ')') as nameWithAge from student;
 select concat('hello', 'world') as helloworld;
 ```
 
-Math
+- Math
 
 ```sql
 select age - 18 as relativeAge from student;
@@ -203,7 +204,7 @@ select concat('hello', 'world');
 聚集函数，一些对数据进行汇总的函数，常见有 COUNT， MIN， MAX， AVG， SUM 五种。
 
 ```sql
-# 统计1班人数
+# 统计 1 班人数
 select count(*) from student where class_id = 1;
 ```
 
@@ -215,8 +216,7 @@ select count(*) from student where class_id = 1;
 select class_id, count(*) from student group by class_id;
 
 # 列出大于三个学生的班级
-select class_id, count(*) as cnt from student
-group by class_id having cnt > 3;
+select class_id, count(*) as cnt from student group by class_id having cnt > 3;
 ```
 
 **子查询**
@@ -237,32 +237,32 @@ select * from student, class
 where student.class_id = class.id and class.name = '软件工程';
 ```
 
-1、内联接
-内联接又叫等值联接。
+1. 内联接
+   内联接又叫等值联接。
 
-```sql
-# 列出软件工程班级中的学生
-select * from student
-inner join class on student.class_id = class.id
-where class.name = '软件工程';
-```
+   ```sql
+   # 列出软件工程班级中的学生
+   select * from student
+   inner join class on student.class_id = class.id
+   where class.name = '软件工程';
+   ```
 
-2、自联接
+2. 自联接
 
-```sql
-# 列出与张三同一班级的学生
-select * from student s1
-inner join student s2 on s1.class_id = s2.class_id
-where s1.name = '张三';
-```
+   ```sql
+   # 列出与张三同一班级的学生
+   select * from student s1
+   inner join student s2 on s1.class_id = s2.class_id
+   where s1.name = '张三';
+   ```
 
-3、外连接
+3. 外连接
 
-```sql
---列出每个学生的班级，弱没有班级则为null
-select name, class.name from student
-left join class on student.class_id = class.id;
-```
+   ```sql
+   --列出每个学生的班级，弱没有班级则为null
+   select name, class.name from student
+   left join class on student.class_id = class.id;
+   ```
 
 **视图**
 视图是一种虚拟的表，便于更好地在多个表中检索数据，视图也可以作写操作，不过最好作为只读。在需要多个表联接的时候可以使用视图。
@@ -281,45 +281,45 @@ select * from v_student_with_classname;
 1. primiry key
    任意两行绝对没有相同的主键，且任一行不会有两个主键且主键绝不为空。使用主键可以加快索引。
 
-```sql
-alter table student add constraint primary key (id);
-```
+   ```sql
+   alter table student add constraint primary key (id);
+   ```
 
 2. foreign key
    外键可以保证数据的完整性。有以下两种情况。
 
-- 插入张三丰 5 班到 student 表中会失败，因为 5 班在 class 表中不存在。
-- class 表删除 3 班会失败，因为陆小凤和楚留香还在 3 班。
+   - 插入张三丰 5 班到 student 表中会失败，因为 5 班在 class 表中不存在。
+   - class 表删除 3 班会失败，因为陆小凤和楚留香还在 3 班。
 
-```sql
-alter table student add constraint
-foreign key (class_id) references class (id);
-```
+   ```sql
+   alter table student add constraint
+   foreign key (class_id) references class (id);
+   ```
 
-1. unique key
+3. unique key
    唯一索引保证该列值是唯一的，但可以允许有 null。
 
-```sql
-alter table student add constraint unique key (name);
-```
+   ```sql
+   alter table student add constraint unique key (name);
+   ```
 
 4. check
    检查约束可以使列满足特定的条件，如果学生表中所有的人的年龄都应该大于 0。
 
-> 不过很可惜 mysql 不支持，可以使用触发器代替
+   > 不过很可惜 mysql 不支持，可以使用触发器代替
 
-```sql
-alter table student add constraint check (age > 0);
-```
+   ```sql
+   alter table student add constraint check (age > 0);
+   ```
 
 5. index
    索引可以更快地检索数据，但是降低了更新操作的性能。
 
-```sql
-create index index_on_student_name on student (name);
+   ```sql
+   create index index_on_student_name on student (name);
 
-alter table student add constraint key(name );
-```
+   alter table student add constraint key(name );
+   ```
 
 **触发器**
 可以再插入、更新、删除行的时候触发事件。
@@ -356,73 +356,72 @@ call create_student('shanyue');
 
 1. 根据班级学生的分数进行排名，如果分数相等则为同一名次
 
-```sql
-select id, name, score, (
-  select count(distinct score) from student s2
-where s2.score >= s1.score
-) as rank
-from student s1
-order by s1.score desc;
-```
+   ```sql
+   select id, name, score, (
+   select count(distinct score) from student s2 where s2.score >= s1.score
+   ) as rank
+   from student s1
+   order by s1.score desc;
+   ```
 
-> 在 where 以及排序中经常用到的字段需要添加 Btree 索引，因此 score 上可以添加索引。
+   > 在 where 以及排序中经常用到的字段需要添加 Btree 索引，因此 score 上可以添加索引。
 
-Result:
+   Result:
 
 2. 写一个函数，获取第 N 高的分数
 
-```sql
-create function getNthHighestScore(N int) return int
-begin
-  declare M int default N-1;
-  return (
-    select distinct score from student
-    order by score desc limit M, 1;
-  )
-end;
+   ```sql
+   create function getNthHighestScore(N int) return int
+   begin
+   declare M int default N-1;
+   return (
+      select distinct score from student
+      order by score desc limit M, 1;
+   )
+   end;
 
-select getNthHighestScore(2);
-```
+   select getNthHighestScore(2);
+   ```
 
-Result:
+   Result:
 
 3. 检索每个班级分数前两名学生，并显示排名
 
-```sql
-select
-class.id class_id,
-class.name class_name,
-s.name student_name,
-score,
-rank
-from (
-  select *,
-(
-    select count(distinct score) from student s2
-where s2.score >= s1.score
-and s2.class_id = s1.class_id
-  ) as rank
-from student s1
-) as s
-left join class on s.class_id = class.id
-where rank <= 2;
+   ```sql
+   select
+   class.id class_id,
+   class.name class_name,
+   s.name student_name,
+   score,
+   rank
+   from (
+   select *,
+   (
+      select count(distinct score) from student s2
+   where s2.score >= s1.score
+   and s2.class_id = s1.class_id
+   ) as rank
+   from student s1
+   ) as s
+   left join class on s.class_id = class.id
+   where rank <= 2;
 
---如果不想在from中包含select子句，也可以像如下检索，不过不显示排名
-select
-class.id class_id,
-class.name class_name,
-s1.name name,
-score
-from student s1
-left join class on s1.class_id = class.id
-where (
-select count(*) from student s2
-where s2.class_id = s1.class_id
-and s1.score <= s2.score) <= 2
-order by s1.class_id, score desc;
-```
+   --如果不想在from中包含select子句，也可以像如下检索，不过不显示排名
+   select
+   class.id class_id,
+   class.name class_name,
+   s1.name name,
+   score
+   from student s1
+   left join class on s1.class_id = class.id
+   where (
+   select count(*) from student s2
+   where s2.class_id = s1.class_id
+   and s1.score <= s2.score) <= 2
+   order by s1.class_id, score desc;
+   ```
 
-Result:
+   Result:
 
 #### 四、FAQ
 
@@ -431,13 +430,13 @@ Result:
    比如以上 student 表保存着成绩，另有一表 score_correct 内存因失误而需修改的学生成绩。
    在 mysql 中，可以使用如下语法：
 
-```sql
-update
-student,
-score_correct
-set student.score = score_correct.score
-where student.id = score_correct.uid;
-```
+   ```sql
+   update
+   student,
+   score_correct
+   set student.score = score_correct.score
+   where student.id = score_correct.uid;
+   ```
 
 3. 索引是如何工作的？
    简单来说，索引分为 hash 和 B-Tree 两种。hash 查找的时间复杂度为 O(1)。B-Tree 其实是 B+Tree，一种自平衡多叉搜索数，自平衡代表每次插入和删除数据都会需要动态调整树高，以降低平衡因子。B+Tree 只有叶子节点会存储信息，并且会使用链表链接起来。因此适合范围查找以及排序，不过只能搜索最左前缀，如只能索引以 a 开头的姓名，却无法索引以 a 结尾的姓名。另外，Everything is trade off。B+Tree 的自平衡特性保证能够快速查找的同时也降低了更新的性能，需要权衡利弊。
@@ -445,41 +444,124 @@ where student.id = score_correct.uid;
 4. 如何联接多个行的字段？
    在 mysql 中，可以使用 group_concat
 
-```sql
-select group_concat(name) from student;
-```
+   ```sql
+   select group_concat(name) from student;
+   ```
 
 5. 如何在一个 sql 语句中插入多行数据？
    values 使用逗号相隔，可以插入多行数据
 
-```sql
-insert into student(id, name) values (), (), ()
-```
+   ```sql
+   insert into student(id, name) values (), (), ()
+   ```
 
 6. 如何在 select 中使用条件表达式？
    示例，在 student 表中，查询所有人成绩，小于 60 则显示为 0
 
-```sql
-select id, name, if(score < 60, 0, score) score from student;
-```
+   ```sql
+   select id, name, if(score < 60, 0, score) score from student;
+   ```
 
 7. 如何找到重复项？
 
-```sql
-select name, sex, count(*) times from student
-group by name, sex
-having times > 1;
-```
+   ```sql
+   select name, sex, count(*) times from student
+   group by name, sex
+   having times > 1;
+   ```
 
 8. 什么是 SQL 注入？
    如有一条查询语句为：
 
-```sql
-"select * from (" + table + ");"
-```
+   ```sql
+   "select * from (" + table + ");"
+   ```
 
-当 table 取值 student);drop table student;-- 时，语句变为了，会删掉表，造成攻击。
+   当 table 取值 student);drop table student;-- 时，语句变为了，会删掉表，造成攻击。
 
-```sql
-"select * from (student); drop table student; --);"
-```
+   ```sql
+   "select * from (student); drop table student; --);"
+   ```
+
+#### 五、其他
+
+**编码相关**
+
+1. 字符集（Character Set）
+   字符集是一组符号和编码。 排序规则是用于比较字符集中的字符的一组规则。
+
+   ```sql
+   # 查看数据库支持的所有字符集
+   show character set;
+   # 或
+   select * from information_schema.character_sets;
+   ```
+
+   Result：
+   ![mysql_character_1](./img/mysql_character_1.png)
+
+   ```sql
+   # 查看当前数据库的字符集
+   show variables like '%character_set%';
+   ```
+
+   Result：
+   ![mysql_character_2](./img/mysql_character_2.png)
+
+2. 字符序（Collation）
+   字符序是指在同一字符集内字符之间的比较规则。
+
+   ```sql
+   # 查看数据库支持的所有字符序
+   show collation;
+   # 或
+   select * from information_schema.collations;
+   ```
+
+   ![mysql_collation_1](./img/mysql_collation_1.png)
+
+   ```sql
+   # 查看当前数据库的字符序
+   show variables like '%collation%';
+   ```
+
+   Result：
+   ![mysql_collation_2](./img/mysql_collation_2.png)
+
+   字符集与字符序的关系：
+
+   - 一个字符集对应至少一种字符序（一般是 1 对多）
+
+   - 两个不同的字符集不能有相同的字符序
+
+   - 每个字符集都有默认的字符序
+
+3. 数据库编码
+
+   ```sql
+   # 查看当前数据库的编码
+   show create database school;
+   ```
+
+   Result：
+   ![mysql_create_database](./img/mysql_create_database.png)
+
+4. 表编码
+
+   ```sql
+   # 查看表的编码
+   show create table class;
+   ```
+
+   Result：
+   ![mysql_create_table](./img/mysql_create_table.png)
+
+5. 字段编码
+
+   ```sql
+   # 查看字段编码
+   show full columns from student;
+   ```
+
+   Result：
+   ![mysql_full_columns](./img/mysql_full_columns.png)

@@ -219,26 +219,33 @@ select class_id, count(*) from student group by class_id;
 select class_id, count(*) as cnt from student group by class_id having cnt > 3;
 ```
 
+Result:
+![mysql_group_by_1](./img/mysql_group_by.png)
 **子查询**
 
 ```sql
 # 列出软件工程班级中的学生
 select * from student where class_id in (
-  select id from class where class_id = '软件工程'
+  select id from class where name = '软件工程'
 );
 ```
 
-**关联联接**
+Result:
+![mysql_query_subquery](./img/mysql_query_subquery.png)
+
+**关联连接**
 虽然两个表拥有公共字段便可以创建联接，但是使用外键可以更好地保证数据完整性。比如当对一个学生插入一条不存在的班级的时候，便会插入失败。一般来说，联接比子查询拥有更好的性能。
 
 ```sql
 # 列出软件工程班级中的学生
-select * from student, class
-where student.class_id = class.id and class.name = '软件工程';
+select * from student, class where student.class_id = class.id and class.name = '软件工程';
 ```
 
-1. 内联接
-   内联接又叫等值联接。
+Result:
+![mysql_join](./img/mysql_join.png)
+
+1. 内连接
+   内连接又叫等值连接。
 
    ```sql
    # 列出软件工程班级中的学生
@@ -247,7 +254,10 @@ where student.class_id = class.id and class.name = '软件工程';
    where class.name = '软件工程';
    ```
 
-2. 自联接
+   Result:
+   ![mysql_join_inner](./img/mysql_join_inner.png)
+
+2. 自连接
 
    ```sql
    # 列出与张三同一班级的学生
@@ -256,16 +266,23 @@ where student.class_id = class.id and class.name = '软件工程';
    where s1.name = '张三';
    ```
 
+   Result:
+   ![mysql_join_self](./img/mysql_join_self.png)
+
 3. 外连接
+   外连接分为左外连接（left join）和右外连接（right join）
 
    ```sql
-   --列出每个学生的班级，弱没有班级则为null
-   select name, class.name from student
+   # 列出每个学生的班级，若没有班级则为 null
+   select * from student
    left join class on student.class_id = class.id;
    ```
 
+   Result:
+   ![mysql_join_left](./img/mysql_join_left.png)
+
 **视图**
-视图是一种虚拟的表，便于更好地在多个表中检索数据，视图也可以作写操作，不过最好作为只读。在需要多个表联接的时候可以使用视图。
+视图是一种虚拟的表，便于更好地在多个表中检索数据，视图也可以作读写操作，不过最好作为只读。在需要多个表连接的时候可以使用视图。
 
 ```sql
 create view v_student_with_classname as

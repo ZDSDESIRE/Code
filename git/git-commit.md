@@ -1,4 +1,4 @@
-## Git commit 提交规范
+### Git commit 提交规范
 
 #### type：description
 
@@ -12,17 +12,17 @@
 
 type 包含以下几种：
 
-* add：新功能
-* fix：bug修复
-* update：更新
-* del：移除文件
-* docs：文档改变
-* style：代码格式改变
-* perf：性能优化
-* test：添加测试代码
-* revert：撤销上一次的commit
-* refactor：某个已有功能重构
-* build：构建工具或构建过程的变动，如：webpack升级、gulp替换为webpack等
+- add：新功能
+- fix：bug 修复
+- update：更新
+- del：移除文件
+- docs：文档改变
+- style：代码格式改变
+- perf：性能优化
+- test：添加测试代码
+- revert：撤销上一次的 commit
+- refactor：某个已有功能重构
+- build：构建工具或构建过程的变动，如：webpack 升级、gulp 替换为 webpack 等
 
 ##### 参考格式
 
@@ -42,4 +42,4 @@ type 包含以下几种：
 
 ##### issue（可选）
 
-所关联的issue。
+所关联的 issue。

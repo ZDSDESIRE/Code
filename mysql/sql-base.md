@@ -405,36 +405,28 @@ call create_student('shanyue');
 3. 检索每个班级分数前两名学生，并显示排名
 
    ```sql
-   select
-   class.id class_id,
-   class.name class_name,
-   s.name student_name,
-   score,
-   rank
+   select class.id class_id, class.name class_name, s.name student_name, score, rank
    from (
    select *,
    (
       select count(distinct score) from student s2
-   where s2.score >= s1.score
-   and s2.class_id = s1.class_id
+      where s2.score >= s1.score
+      and s2.class_id = s1.class_id
    ) as rank
    from student s1
    ) as s
    left join class on s.class_id = class.id
    where rank <= 2;
 
-   --如果不想在from中包含select子句，也可以像如下检索，不过不显示排名
-   select
-   class.id class_id,
-   class.name class_name,
-   s1.name name,
-   score
+   --如果不想在 from 中包含 select 子句，也可以像如下检索，不过不显示排名
+   select class.id class_id, class.name class_name, s1.name name, score
    from student s1
    left join class on s1.class_id = class.id
    where (
-   select count(*) from student s2
-   where s2.class_id = s1.class_id
-   and s1.score <= s2.score) <= 2
+      select count(*) from student s2
+      where s2.class_id = s1.class_id
+      and s1.score <= s2.score
+   ) <= 2
    order by s1.class_id, score desc;
    ```
 
@@ -448,9 +440,7 @@ call create_student('shanyue');
    在 mysql 中，可以使用如下语法：
 
    ```sql
-   update
-   student,
-   score_correct
+   update student, score_correct
    set student.score = score_correct.score
    where student.id = score_correct.uid;
    ```
@@ -535,6 +525,7 @@ call create_student('shanyue');
    select * from information_schema.collations;
    ```
 
+   Result：
    ![mysql_collation_1](./img/mysql_collation_1.png)
 
    ```sql

@@ -114,4 +114,67 @@ const currenURL = () = window.location.href;
 currentURL();  // 'https://google.com'
 ```
 
-11.
+11. 如何创建一个包含当前 URL 参数的对象？
+
+```js
+const getURLParameters = (url) =>
+  (url.match(/([^?=&]+)(=([^&]*))/g) || []).reduce(
+    (a, v) => (
+      (a[v.slice(0, v.indexOf("="))] = v.slice(v.indexOf("=") + 1)), a
+    ),
+    {}
+  );
+// Examples
+getURLParameters("http://url.com/page?n=Adam&s;=Smith"); // {n: 'Adam', s: 'Smith'}
+getURLParameters("google.com"); // {}
+```
+
+12. 如何将一组表单元素编码为一个对象？
+
+```js
+const formToObject = (form) =>
+  Array.from(new FormData(form)).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      [key]: value,
+    }),
+    {}
+  );
+// Example
+formToObject(document.querySelector("#form")); // { email: 'test@email.com', name: 'Test Name' }
+```
+
+13. 如何从对象中检索给定选择器指示的一组属性？
+
+```js
+const get = (from, ...selectors) =>
+  [...selectors].map((s) =>
+    s
+      .replace(/\[([^\[\]]*)\]/g, ".$1.")
+      .split(".")
+      .filter((t) => t !== "")
+      .reduce((prev, cur) => prev && prev[cur], from)
+  );
+const obj = {
+  selector: { to: { val: "val to select" } },
+  target: [1, 2, { a: "test" }],
+};
+// Example
+get(obj, "selector.to.val", "target[0]", "target[2].a"); // ['val to select', 1, 'test']
+```
+
+14. 如何在等待一定时间后调用提供的函数（单位毫秒）？
+
+```js
+const delay = (fn, wait, ...args) => setTimeout(fn, wait, ...args);
+delay(
+  function (text) {
+    console.log(text);
+  },
+  1000,
+  "later"
+);
+// 一秒后记录 'later'。
+```
+
+15.

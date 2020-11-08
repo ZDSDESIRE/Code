@@ -177,4 +177,151 @@ delay(
 // 一秒后记录 'later'。
 ```
 
-15.
+15. 如何在给定元素上触发特定事件，且可选传递自定义数据？
+
+```js
+const triggerEvent = (el, evenType, detail) =>
+  el.dispatchEvent(new CustomEvent(evenType, { detail }));
+// Example
+triggerEvent(document.getElementById("myId"), "click");
+triggerEvent(document.getElementById("myId"), "click", { username: "bob" });
+```
+
+16. 如何移除一个元素的事件侦听器？
+
+```js
+const off = (el, wvt, fn, opts = false) =>
+  el.removeEventListenter(evt, fn, opts);
+const fn = () => console.log("!");
+document.body.addEventListener("click", fn);
+off(document.body, "click", fn); // no longer logs '!' upon clicking on the page
+```
+
+17. 如何获得给定毫秒数的可读格式？
+
+```js
+const formatDuration = (ms) => {
+  if (ms < 0) ms = -ms;
+  const time = {
+    day: Math.floor(ms / 86400000),
+    hour: Math.floor(ms / 3600000) % 24,
+    minute: Math.floor(ms/60000) % 60,
+    second: Math.floor(ms / 1000) % 60,
+    millisecond: Math.floor(ms) % 1000
+  };
+  return Object.entries(time)
+    .filter(val => val[1] !== 0)
+    .map(([key, val]) => '${val} ${key}${val !== 1 ? 's' : ''}')
+    .join('，');
+};
+// Example
+formatDuration(1001); // '1 second, 1 millisecond'
+formatDuration(34325055574); // '397 days, 6 hours, 44 minutes, 15 seconds, 574 milliseconds'
+```
+
+18. 如何获取两个日期之间的天数间隔？
+
+```js
+const getDaysDiffBetweeenDates = (dataInitial, dateFianl) =>
+  (dateFinal - dateInitial) / (1000 * 3600 * 24);
+// Example
+getDaysDiffBetweenDates(new Date("2017-12-13"), new Date("2017-12-22")); // 9
+```
+
+19. 如何对传递的 URL 进行 GET 请求？
+
+```js
+const httpGet = (url, callback, err = console.error) => {
+  const request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.onload = () => callback(request.responseText);
+  request.onerror = () => err(request);
+  request.send();
+};
+// Example
+httpGet("https://jsonplaceholder.typicode.com/posts/1", console.log); // Logs: {"userId": 1, "id": 1, "title": "sample title", "body": "my text"}
+```
+
+20. 如何对传递的 URL 进行 Post 请求？
+
+```js
+const httpPost = (url, data, callback, err = console.error) => {
+  const request = new XMLHttpRequest();
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/json; charset=utf-8");
+  request.onload = () => callback(request.responseText);
+  request.onerror = () => err(request);
+  request.send(data);
+};
+const newPost = {
+  userId: 1,
+  id: 1337,
+  title: "Foo",
+  body: "bar bar bar",
+};
+const data = JSON.stringify(newPost);
+httpPost("https://jsonplaceholder.typicode.com/posts", data, console.log);
+// Logs: {"userId": 1, "id": 1337, "title": "Foo", "body": "bar bar bar"}
+```
+
+21. 如何为指定选择器创建具有指定范围、步长和持续时间的计时器？
+
+```js
+const counter = (selector, start, end, step = 1, duration = 2000) => {
+  let current = start,
+    _step = (end - start) * step < 0 ? -step : step,
+    timer = setInterval(() => {
+      current += _step;
+      document.querySelector(selector).innerHTML = current;
+      if (current >= end) document.querySelector(selector).innerHTML = end;
+      if (current >= end) clearInterval(timer);
+    }, Math.abs(Math.floor(duration / (end - start))));
+  return timer;
+};
+// Example
+counter("#my-id", 1, 1000, 5, 2000); // 为 id="my-id" 的元素创建一个两秒的计时器
+```
+
+22. 如何将一个字符串复制到剪贴板？
+
+```js
+const copyToClipboard = (str) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  const selected =
+    document.getSelection().rangeCount > 0
+      ? document.getSelection().getRangeAt(0)
+      : false;
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+};
+// Example
+copyToClipboard("Lorem ipsum"); // 'Lorem ipsum' copied to clipboard.
+```
+
+23. 如何确定页面的浏览器选项卡是否处于前台活跃状态？
+
+```js
+const isBrowserTabFocused = () => !document.hidden;
+// Example
+isBrowserTabFocused(); // true
+```
+
+24. 如果一个目录不存在，如何创建它？
+
+```js
+const fs = require("fs");
+const createDirIfNotExits = (dir) =>
+  !fs.existsSync(dir) ? fs.mkdirSync(dir) : underfined;
+// Example
+createDirIfNotExists("test"); // creates the directory 'test', if it doesn't exist
+```

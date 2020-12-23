@@ -1,8 +1,8 @@
 ### JavaScript 知识点
 
-#### 字符串
+#### JS 相关方法
 
-**一、8 个简单的 js 字符串方法**
+##### 一、8 个简单的 js 字符串方法
 
 1. Length
    length 属性返回字符串中包含空格字符串在内的字符总数。
@@ -78,7 +78,7 @@
    // returns the array ["Eight", "Methods", "Are", "Done"]
    ```
 
-**二、8 个简单的 js 数学方法**
+##### 二、8 个简单的 js 数学方法
 
 1. ToString()
    tostring() 方法是将数字作为字符串返回（若提供参数 2、8、16，则返回二进制、八进制和十六进制的值）。
@@ -162,7 +162,7 @@
    parseFloat("dogs 1000"); // returns "NaN"
    ```
 
-**三、9 个功能强大的 js 技巧**
+##### 三、9 个功能强大的 js 技巧
 
 1. 全部替换
    我们知道 string.replace() 函数仅替换第一次出现的情况。
@@ -286,3 +286,110 @@
    console.log(entries);
    // []
    ```
+
+#### JS 相关问题
+
+##### 一、如何将 JavaScript 中的 JSON 字符串转换为 JSON 对象数组？
+
+**方法一**
+首先使用 JSON.Parse（）方法将 JSON 字符串转换为 JavaScript 对象，然后取出对象的值，然后使用 push（）方法将其推入数组。
+
+```js
+<!DOCTYPE HTML>
+<html>
+<head>
+ <title>
+     将JSON字符串转换为JSON对象数组
+ </title>
+</head>
+<body style = "text-align:center;">
+ <h1 style = "color:#1ab1cc;" >
+   公众号：web前端开发
+ </h1>
+ <p id = "GFG_UP"></p>
+ <button onclick = "myGFG()">
+     Click Here
+ </button>
+ <p id = "GFG_DOWN"></p>
+ <script>
+     var up = document.getElementById("GFG_UP");
+     var JS_Obj =
+     '{"prop_1":"val_1", "prop_2":"val_2", "prop_3" : "val_3"}';
+
+     up.innerHTML = "JSON string - '" + JS_Obj + "'";
+
+     var down = document.getElementById("GFG_DOWN");
+
+     function myGFG() {
+         var obj = JSON.parse(JS_Obj);
+         var res = [];
+
+         for(var i in obj)
+             res.push(obj[i]);
+
+         down.innerHTML = "Array of values - ["
+                         + res + "]";
+     }
+</script>
+</body>
+</html>
+```
+
+输出结果截图如下：
+![json01](images/json01.gif)
+
+**方法二**
+方法二使用 eval（）方法将 JSON 字符串转换为 JavaScript 对象，然后取出对象的值，然后使用 push（）方法将其推入数组。
+
+```js
+<!DOCTYPE HTML>
+<html>
+
+<head>
+   <title>
+         将JSON字符串转换为JSON对象数组
+   </title>
+</head>
+
+<body style = "text-align:center;">
+
+   <h1 style = "color:#1ab1cc;" >
+      公众号：web前端开发
+   </h1>
+
+   <p id = "GFG_UP"></p>
+
+   <button onclick = "myGFG()">
+      Click Here
+   </button>
+
+   <p id = "GFG_DOWN"></p>
+
+   <script>
+      var up = document.getElementById("GFG_UP");
+
+      var JS_Obj =
+      '{"prop_1":"val_1", "prop_2":"val_2", "prop_3" : "val_3"}';
+
+      up.innerHTML = "JSON string - '" + JS_Obj + "'";
+
+      var down = document.getElementById("GFG_DOWN");
+
+      function myGFG() {
+            var obj = eval('(' + JS_Obj + ')');
+            var res = [];
+
+            for(var i in obj)
+               res.push(obj[i]);
+
+            down.innerHTML = "Array of values - ["
+                           + res + "]";
+      }
+</script>
+</body>
+
+</html>
+```
+
+输出结果截图如下：
+![json02](images/json02.gif)

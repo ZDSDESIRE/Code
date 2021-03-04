@@ -421,6 +421,106 @@ bifurcateBy(["beep", "boop", "foo", "bar"], (x) => x[0] === "b");
 // [ ['beep', 'boop', 'bar'], ['foo'] ]
 ```
 
+**11. bottomVisible**
+用于检测页面是否滚动到页面底部。
+
+```js
+const bottomVisible = () =>
+  document.documentElement.clientHeight + window.scrollY >=
+  (document.documentElement.scrollHeight ||
+    document.documentElement.clientHeight);
+
+bottomVisible(); // true
+```
+
+**12. byteSize**
+此代码返回字符串的字节长度。这里用到了 Blob 对象，Blob（Binary Large Object）对象代表了一段二进制数据，提供了一系列操作接口。其他操作二进制数据的 API（比如 File 对象），都是建立在 Blob 对象基础上的，继承了它的属性和方法。生成 Blob 对象有两种方法：一种是使用 Blob 构造函数，另一种是对现有的 Blob 对象使用 slice 方法切出一部分。
+
+```js
+const byteSize = (str) => new Blob([str]).size;
+byteSize(""); // 4
+byteSize("Hello World"); // 11
+```
+
+**13. capitalize**
+将字符串的首字母转成大写,这里主要运用到了 ES6 的展开语法在数组中的运用。
+
+```js
+const capitalize = ([first, ...rest]) => first.toUpperCase() + rest.join("");
+
+capitalize("fooBar"); // 'FooBar'
+capitalize("fooBar", true); // 'FooBar'
+```
+
+**14. capitalizeEveryWord**
+将一个句子中每个单词首字母转换成大写字母，这里中要运用了正则表达式进行替换。
+
+```js
+const capitalizeEveryWord = (str) =>
+  str.replace(/\b[a-z]/g, (char) => char.toUpperCase());
+
+capitalizeEveryWord("hello world!"); // 'Hello World!'
+```
+
+**15. castArray**
+此段代码将非数值的值转换成数组对象。
+
+```js
+const castArray = (val) => (Array.isArray(val) ? val : [val]);
+
+castArray("foo"); // ['foo']
+castArray([1]); // [1]
+```
+
+**16. compact**
+将数组中移除值为 false 的内容。
+
+```js
+const compact = (arr) => arr.filter(Boolean);
+
+compact([0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]);
+// [ 1, 2, 3, 'a', 's', 34 ]
+```
+
+**17. countOccurrences**
+统计数组中某个值出现的次数
+
+```js
+const countOccurrences = (arr, val) =>
+  arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+countOccurrences([1, 1, 2, 1, 2, 3], 1); // 3
+```
+
+**18. Create Directory**
+此代码段使用 existSync() 检查目录是否存在，然后使用 mkdirSync() 创建目录（如果不存在）。
+
+```js
+const fs = require("fs");
+const createDirIfNotExists = (dir) =>
+  !fs.existsSync(dir) ? fs.mkdirSync(dir) : undefined;
+createDirIfNotExists("test");
+// creates the directory 'test', if it doesn't exist
+```
+
+**19. currentURL**
+返回当前访问的 URL 地址。
+
+```js
+const currentURL = () => window.location.href;
+
+currentURL(); // 'https://medium.com/@fatosmorina'
+```
+
+**20. dayOfYear**
+返回当前是今年的第几天
+
+```js
+const dayOfYear = (date) =>
+  Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+
+dayOfYear(new Date()); // 272
+```
+
 #### JS 相关问题
 
 ##### 一、如何将 JavaScript 中的 JSON 字符串转换为 JSON 对象数组？

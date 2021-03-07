@@ -71,3 +71,66 @@ HTML5 包含嵌入音频文件的标准方式，支持的格式包括 MP3、Wav 
   Your browser does'nt support audio embedding feature.
 </audio>
 ```
+
+#### 11、如何在 HTML5 页面中嵌入视频？
+
+和嵌入音频文件一样，HTML5 定义了嵌入视频的标准方式，支持的格式包括 MP4、WebM 和 Ogg 等，嵌入方式如下：
+
+```html
+< video width=”450” height=”340” contro1s>
+<source src="icketang.mp4"  type="video/mp4">
+Your browser does'nt support video embedding feature.
+</video>
+```
+
+#### 12、HTML5 引入了哪些新的表单属性？
+
+新增的表单属性包括 datelist、datetime、output、keygen、date、month、week、time、number、range、email、url。
+
+#### 13、如何显示我们自己画的一个弹框？
+
+可以用一个简单的方法，在页面上单击一个按钮，弹出一个弹框，而弹框也是自己写的一个 div，单击前先把弹框隐藏，onclick 事件发生之后就会显示出来。
+
+#### 14、HTML5 应用缓存和常规的 HTML 浏览器缓存有什么差别？
+
+HTML5 应用缓存最关键的就是支持离线应用，可获取少数或者全部网站内容，包括 HTML、CSS、图像和 JavaScript 脚本并存于本地。该特性提升了网站的性能，可通过如下方式实现：
+
+```html
+<!DOCTYPE html>
+<html manifest="example.appcache">
+  ......
+</html>
+```
+
+与传统的浏览器缓存比较，该特性并不强制要求用户访问网站。
+
+#### 15、为什么 HTML5 里面不需要 DTD（Document Type Definition，文档类型定义）？如何不放入<!doctype html>标签，HTML5 还会工作吗？
+
+HTML5 没有使用 SGML 或者 XHTML，它是一个全新的类型，因此不需要参考 DTD。
+对于 HTML5，仅须放置<！doctype html>标签，即文档类型代码，让浏览器识别 HTML5 文档。如果不放入该标签，HTML5 不会工作。浏览器将不能识别出它是 HTML 文档，同时 HTML5 的标签将不能正常工作。
+
+#### 16、哪些浏览器支持 HTML5？
+
+几乎所有的浏览器（如 Safari、Chrome、Firefox、Opera、IE）都支持 HTML5。
+
+#### 17、本地存储和会话存（事务）储之间的区别是什么？
+
+本地存储数据持续永久，但是会话存储在浏览器打开时有效，在浏览器关闭时会话重置存储数据。
+
+#### 18、HTML5 中的应用缓存是什么？
+
+HTML5 应用缓存的最终目的是帮助用户离线浏览页面，换句话说，如果网络连接不可用，打开的页面就来自浏览器缓存，离线应用缓存可以帮助用户达到这个目的。
+应用缓存可以帮助用户指定哪些文件需要缓存，哪些不需要。
+
+#### 19、如皋把 HTML5 看成一个开放平台，它的构建模块有哪些？
+
+如果把 HTML 看成一个开放平台，它的构建模块至少包括以下几个，如<nav><header><section><footer>。
+
+<nav>标签用来将具有导航性质的链接划分在一起，使代码结构在语义化方面更加准确
+<header>标签用来定义文档的页眉。
+<section>标签用来描述文档的结构。
+<footer>标签用来定义页脚。在典型情况下，该元素会包含文档作者的姓名、文档的创作日期和联系信息。
+
+#### 20、HTML5 为什么只需要写<!doctype html>？
+
+HTML5 不基于 SGML，因此不需要对 DTD 进行引用，但是需要 DOCTYPE 来规范浏览器的行为（让浏览器按照它们的方式来进行）。而 HTM4.01 基于 SGML，所以需要对 DTD 进行引用，才能告知浏览器文档所使用的类型。

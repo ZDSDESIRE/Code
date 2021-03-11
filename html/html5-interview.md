@@ -122,7 +122,7 @@ HTML5 没有使用 SGML 或者 XHTML，它是一个全新的类型，因此不�
 HTML5 应用缓存的最终目的是帮助用户离线浏览页面，换句话说，如果网络连接不可用，打开的页面就来自浏览器缓存，离线应用缓存可以帮助用户达到这个目的。
 应用缓存可以帮助用户指定哪些文件需要缓存，哪些不需要。
 
-#### 19、如皋把 HTML5 看成一个开放平台，它的构建模块有哪些？
+#### 19、如果把 HTML5 看成一个开放平台，它的构建模块有哪些？
 
 如果把 HTML 看成一个开放平台，它的构建模块至少包括以下几个，如<nav><header><section><footer>。
 
@@ -134,3 +134,84 @@ HTML5 应用缓存的最终目的是帮助用户离线浏览页面，换句话�
 #### 20、HTML5 为什么只需要写<!doctype html>？
 
 HTML5 不基于 SGML，因此不需要对 DTD 进行引用，但是需要 DOCTYPE 来规范浏览器的行为（让浏览器按照它们的方式来进行）。而 HTM4.01 基于 SGML，所以需要对 DTD 进行引用，才能告知浏览器文档所使用的类型。
+
+#### 21、HTML5 应用程序缓存为应用带来什么优势？
+
+3 个优势：
+
+1. 离线浏览，让用户可在应用离线时（网络不可用）使用它们。
+2. 速度，让已缓存资源加载的更快。
+3. 减少服务器负载，让浏览器只下载服务器更新过的资源。
+
+#### 22、与 HTML4 比较，HTML5 废弃了哪些元素？
+
+废弃的元素包括 frame、frameset、noframe、applet、big、center 和 basefont。
+
+#### 23、HTML5 标准提供了哪些新的 API？
+
+HTML5 标准提供了很多新的 API，包括 Media API、Text Track API、Application Cache API、User Interaction API、Data Transfer API、Command API、Constraintion Validation API 和 History API。
+
+#### 24、请你说一下 Web Worker 和 WebSocket 的作用
+
+Web Worker 的作用如下：
+
+1. 通过 worker=new worker(url)加载一个 JavaScript 文件，创建一个 Worker，同时返回一个 Worker 实例。
+2. 用 worker.postMessage(date)向 Worker 发送数据。
+3. 绑定 worker.onmessage 接受 Worker 发送过来的数据。
+4. 可以使用 worker.terminate()终止一个 worker 的执行。
+
+WebSocket 的作用如下：
+它是 Web 应用程序的传输协议，提供了双向的、按序到达的数据流。它是 HTML5 新增的协议，WebSocket 的连接是持久的，它在客户端和服务器之间保持双工连接服务器的更新可以及时推送到客户端，而不是客户端以一定的时间间隔去轮询。
+
+#### 25、如何实现浏览器内多个标签页之间的通信？
+
+在标签页之间，调用 localstorge、cookies 等数据存储，可以实现标签页之间的通信。
+
+#### 26、如何让 Websocket 兼容低版本浏览器？
+
+使用 Adope Flash Socket、ActiveX HTMLFile(E)、multipart 编码发送 XHR 与长轮询发送 XHR 等，可以实现不支持 WebSocket API 的浏览器对 Web Socket 的兼容。
+
+#### 27、HTML5 为浏览器提供了哪些数据存储方案？
+
+在较高版本的浏览器中，提供了 sessionStorage 和 globalStorage。在 HTML5 规范中，用 localStorage 取代 globalStorage。
+HTML5 中的 Web Storage 包括两种存储方式，分别是 sessionStorage 和 localStorage。
+sessionStorage 用于在本地存储一个会话（session）中的数据，这些数据只有同一个会话中的页面才能访问，当会话结束后，数据也随之销毁。因此 sessionStorage 不是一种持久化的本地存储，仅仅是会话级别的存储。
+localStorage 用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的。
+localStorage 和 sessionStorage 都具有相同的操作方法，例如 setItem、getItem 和 removeItem 等。
+
+#### 28、请描述一下 sessionStorage 和 localStorage 的区别
+
+sessionStorage 用于在本地存储一个会话中的数据，这些数据只有同一个会话中的页面才能访问，当会话结束后，数据也随之销毁。因此 sessionStorage 不是一种持久化的本地存储，仅仅是会话级别的存储。
+而 localStorage 用于持久化本地存储，除非主动删除数据，否则数据是永远不会过期的。
+
+#### 29、localStorage 和 cookie 的区别是什么？
+
+localStorage 的概念和 cookie 类似，区别是 localStorage 是为了更大容量的存储设计的。cookie 的大小是受限的，并且每次请求一个新页面时，cookie 都会被发送过去，这样无形中浪费了带宽。另外，cookie 还需要指定作用域，不可以跨域调用。
+除此之外，localStorage 拥有 setItem、getItem、removeItem、clear 等方法，cookie 则需要前端开发者自己封装 setCookie 和 getCookie。但 cookie 也是不可或缺的，因为 cookie 的作用是与服务器进行交互，并且还是 HTP 规范的一部分，而 localStorage 仅因为是为了在本地“存储”数据而已，无法跨浏览器使用。
+
+#### 30、请你谈谈 cookie 的特点
+
+cookie 虽然为持久保存客户端数据提供了方便，分担了服务器存储的负担，但是也有以下的局限性：
+
+1. 每个特定的域名下最多生成 20 个 cookie。
+2. IE6 或更低版本最多有 20 个 cookie。
+3. IE7 和之后的版本最多可以有 50 个 cookie。
+4. Firefox 最多可以有 50 个 cookie。
+5. Chrome 和 Safari 没有硬性限制。
+
+IE 和 Opera 会清理近期最少使用的 cookie，Firefox 会随机清理 cookie。
+cookie 最大为 4096 字节，为了兼容性，一般不能超过 4095 字节。
+IE 提供了一种存储方式，可以让用户数据持久化，叫做 userdata，从 IE5.0 就开始支持此功能。每块数据最多 128k，每个域名下最多 1MB。这个持久化数据放在缓存中，如果缓存没有被清理，就会一直存在。
+
+优点如下：
+
+1. 通过良好的编程，控制保存在 cookie 中的 session 对象的大小。
+2. 通过加密和安全传输技术（SSL），降低 cookie 被破解的可能性。
+3. 只在 Cookie 中存放不敏感数据，即使被盗也不会有重大损失。
+4. 控制 cookie 的生命周期，使之不会永远有效。数据偷盗者很可能得到一个过期的 cookie。
+
+缺点如下：
+
+1. “cookie”的数量和长度有限制。每个 domain 最多只能有 20 条 cookie，每个 cookie 的长度不能超过 4KB，否则会被截掉。
+2. 安全性问题。如果 cookie 被别人拦截了，就可以得到所有的 session 信息。即使加密也于事无补，因为拦截者并不需要知道 cookie 的意义，他只要原样转发 cookie 就可以到达目的。
+3. 有些状态不可能保存在客户端。例如，为了防止重复提交表单，我们需要在服务器端保存一个计数器，如果把这个计数器保存在客户端，那么它起不到任何作用。

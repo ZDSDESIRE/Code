@@ -215,3 +215,56 @@ IE 提供了一种存储方式，可以让用户数据持久化，叫做 userdat
 1. “cookie”的数量和长度有限制。每个 domain 最多只能有 20 条 cookie，每个 cookie 的长度不能超过 4KB，否则会被截掉。
 2. 安全性问题。如果 cookie 被别人拦截了，就可以得到所有的 session 信息。即使加密也于事无补，因为拦截者并不需要知道 cookie 的意义，他只要原样转发 cookie 就可以到达目的。
 3. 有些状态不可能保存在客户端。例如，为了防止重复提交表单，我们需要在服务器端保存一个计数器，如果把这个计数器保存在客户端，那么它起不到任何作用。
+
+#### 31、cookie 和 session 的区别是什么？
+
+区别如下:
+
+1. cookie 数据存放在客户的浏览器上，session 数据存放在服务器上。
+2. cookie 不是很安全，别人可以分析存放在本地的 cookie 并进行 cookie 欺骗。考虑道安全问题应当使用 session。
+3. session 会在一定时间内保存在服务器上。当访问增多时，会占用较多服务器的资源。为了减轻服务器的负担，应当使用 cookie。
+4. 单个 cookie 保存的数据不超过 4KB，很多浏览器都限制一个站点最多保存 20 个 cookie。
+
+所以个人建议可以将登录信息等重要信息存放在 session 中，其他信息（如需保留）可以存放在 cookie 中。
+
+#### 32、什么是 SVG？
+
+SVG 即可缩放矢量图形（Scalable Vector Graphics）。它是基于文本的图形语言，使用文本、线条、点等来绘制图像，这使得它轻便、显示迅速/
+
+#### 33、Canvas 和 SVG 的区别是什么？
+
+两者的区别如下：
+
+1. 一旦 Canvas 绘制完成将不能访问像素或操作它；任何使用 SVG 绘制的形状都能被记忆和操作，可以被浏览器再次显示。
+2. Canvas 对绘制动画和游戏非常有利；SVG 对创建图形（如 CAD）非常有利。
+3. 因为不需要记住以后事情，所以 Canvas 运行更快；因为为了之后的操作，SVG 需要记录坐标，所以运行比较缓慢。
+4. 在 Canvas 中不能绘制对象绑定相关事件；在 SVG 中可以为绘制对象绑定相关事件。
+5. Canvas 绘制出的是位图，因此与分辨率有关；SVG 绘制出的是矢量图，因此与分辨率无关。
+
+#### 34、如何使用 Canvas 和 HTML5 的 SVG 画一个矩形？
+
+使用 SVG 绘制矩形的代码如下：
+
+```html
+<svg xmlns=http://www.w3.org/2000/scg version="1.1">
+<rect style="fill:rgb(255,100,0);" height="200" width="400"></rect>
+</svg>
+```
+
+使用 Canvas 绘制矩形的代码如下：
+
+```html
+<canvas id="myManvas" width="500" height="500"></canvas>
+```
+
+```js
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.rect(100, 100, 300, 200);
+ctx.fillstyle = "pink";
+ctx.fill();
+```
+
+#### 35、本地存储的数据有生命周期吗？
+
+本地存储的数据没有生命周期，它将一直存储数据，知直到用户从浏览器清除或者使用 JavaScript 代码移除。

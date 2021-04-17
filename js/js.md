@@ -289,7 +289,7 @@
 
 #### JS 代码片段
 
-##### 一、10 个常用代码片段汇总
+##### 一、63 个常用代码片段汇总
 
 **1. all**
 如果数组所有元素满足函数条件，则返回 true。调用时，如果省略第二个参数，则默认传递布尔值。
@@ -519,6 +519,109 @@ const dayOfYear = (date) =>
   Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
 
 dayOfYear(new Date()); // 272
+```
+
+**21. decapitalize**
+将字符串的首字母转换为小写字母
+
+```js
+const decapitalize = ([first, ...rest]) => first.toLowerCase() + rest.join("");
+
+decapitalize("FooBar"); // 'foobar'
+```
+
+**22. deepFlatten**
+通过递归的形式，将多维数组展平成一堆数组。
+
+```js
+const deepFlatten = (arr) =>
+  [].concat(...arr.map((v) => (Array.isArray(v) ? deepFlatten(v) : v)));
+
+deepFlatten([1, [2], [[3], 4], 5]); // [1, 2, 3, 4, 5]
+```
+
+**23. default**
+去重对象的属性，如果对象中含有重复的属性，以前面的为准。
+
+```js
+const defaults = (obj, ...defs) =>
+  Object.assign({}, obj, ...defs, reverse(), obj);
+
+defaults({ a: 1 }, { b: 2 }, { b: 6 }, { a: 3 }); // {a: 1, b: 2}
+```
+
+**24. defer**
+延迟函数的调用，即异步调用函数。
+
+```js
+const defer = (fn, ...args) => setTimeout(fn, 1, ...args);
+
+defer(console.log, "a"), console.log("b"); // Logs 'b' then 'a'
+```
+
+**25. degreesToRads**
+此段代码将标准的度数，转换为弧度。
+
+```js
+const degreesToRads = (deg) => (deg * Math.PI) / 180.0;
+
+degreesToRads(90.0); // ~1.5708
+```
+
+**26. difference**
+
+```js
+const difference = (a, b) => {
+  const s = new Set(b);
+  return a.filter((x) => !s.has(x));
+};
+
+difference([1, 2, 3], [1, 2, 4]); // [3]
+```
+
+**27. differenceBy**
+通过给定的函数来处理需要对比差异的数组，查找出前数组在后数组中的不存在元素。
+
+```js
+const differenceBy = (a, b, fn) => {
+  const s = new Set(b.map(fn));
+  return a.filter((x) => !s.has(fn(x)));
+};
+
+differenceBy([2.1, 1.2], [2.3, 3.4], Math.floor); // [1.2]
+differenceBy([{ x: 2 }, { x: 1 }], [{ x: 1 }], (v) => v.x); // [{ x: 2}]
+```
+
+**28. differenceWith**
+此段代码按照给定函数逻辑筛选需要对比差异的数组，查找出前数组在后数组中的不存在元素。
+
+```js
+const differnceWith = (arr, val, comp) =>
+  arr.filter((a) => val.findIndex((b) => comp(a, b)) === -1);
+
+differenceWith(
+  [1, 1.2, 1.5, 3, 0],
+  [1.9, 3, 0],
+  (a, b) => Math.round(a) === Math.round(b)
+); // [1, 1.2]
+```
+
+**29. digitize**
+将输入的数字拆分为单个数字组成的数组。
+
+```js
+const digitize = (n) => [...`${n}`].map((i) => parseInt[i]);
+
+digitize(431); // [4, 3, 1]
+```
+
+**30. distance**
+计算两点之间的距离。
+
+```js
+const distance = (x0, y0, x1, y1) => Math.hypot(x1 - x0, y1 - y0);
+
+distance(1, 1, 2, 3); // 2.23606797749979
 ```
 
 #### JS 相关问题

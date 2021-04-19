@@ -624,6 +624,126 @@ const distance = (x0, y0, x1, y1) => Math.hypot(x1 - x0, y1 - y0);
 distance(1, 1, 2, 3); // 2.23606797749979
 ```
 
+**31. drop**
+将给定的数组从左边开始删除 n 个元素。
+
+```js
+const drop = (arr, n = 1) => arr.slice(n);
+
+drop([1, 2, 3]); // [2, 3]
+drop([1, 2, 3], 2); // [3]
+drop([1, 2, 3], 42); // []
+```
+
+**32. dropRight**
+将给定的数组从右边开始删除 n 个元素。
+
+```js
+const dropRight = (arr, n = 1) => arr.slice(0, -n);
+
+dropRight([1, 2, 3]); // [1,2]
+dropRight([1, 2, 3], 2); // [1]
+dropRight([1, 2, 3], 42); // []
+```
+
+**33. dorpRightWhile**
+将给定的数组按照给定的函数条件从右开始删除，直到当前元素满足函数条件为 True 时，停止删除，并返回数组剩余元素。
+
+```js
+const dropRightWhile = (arr, func) => {
+  while (arr.length > 0 && !func(arr[arr.length - 1])) arr = arr.slice(0, -1);
+  return arr
+};
+
+dropRightWhile([1,2,3,4], n => n<3>); // [1, 2]
+```
+
+**34. dropWhile**
+按照给定的函数条件筛选数组，不满足函数条件的将从数组中移除。
+
+```js
+const dropWhile = (arr, func) => {
+  while (arr.length > 0 && !func(arr[0])) arr = arr.slice(1);
+  return arr;
+};
+
+dropWhile([1, 2, 3, 4], (n) => n >= 3); // [3, 4]
+```
+
+**35. elementContains**
+接受两个 DOM 元素对象参数，判断后者是否是前者的子元素。
+
+```js
+const elemntContains = (parent, child) =>
+  parent !== child && parent.contains(child);
+
+elementContains(
+  document.querySelector("head"),
+  document.querySelector("title")
+); // true
+elementContains(document.querySelector("body"), document.queryselector("body")); // false
+```
+
+**36. filterNonUnique**
+移除数组中重复的元素。
+
+```js
+const filterNonUnique = (arr) => [...new Set(arr)];
+
+filterNonUnique([1, 2, 2, 3, 4, 4, 5]); // [1, 2, 3, 4, 5]
+```
+
+**37. findKey**
+按照给定的函数条件，查找第一个满足条件对象的键值。
+
+```js
+const findKey = (obj, fn) =>
+  Object.keys(obj).find((key) => fn(obj[key], key, obj));
+
+findKey(
+  {
+    barney: { age: 36, active: true },
+    fred: { age: 40, active: false },
+    pebbles: { age: 1, active: true },
+  },
+  (o) => o["active"]
+); // 'barney'
+```
+
+**38. findLast**
+按照给定的函数条件筛选数组，将最后一个满足条件的元素进行删除。
+
+```js
+const findLast = [arr, fn] => arr.filter(fn).pop();
+
+findLast([1, 2, 3, 4], n => n % 2 === 1); // 3
+```
+
+**39. flatten**
+按照指定数组的深度，将嵌套数组进行展平。
+
+```js
+const flatten = (arr, depth = 1) =>
+  arr.reduce(
+    (a, v) =>
+      a.concat(depth > 1 && Array.isArray(v) ? flatten(v, depth - 1) : v),
+    []
+  );
+
+flatten([1, [2], 3, 4]); // [1, 2, 3, 4]
+flatten([1, [2, [3, [4, 5], 6], 7], 8], 2); // [1, 2, 3, [4, 5], 6, 7, 8]
+```
+
+**40. forEachRight**
+按照给定的函数条件，从数组的右边往左依次进行执行。
+
+```js
+const forEachRight = (arr, callback) =>
+  arr.slice(0).reverse().forEach(callback);
+
+forEachRight([1, 2, 3, 4], (val) => console.log(val)); // '4', '3', '2', '1'
+```
+
 #### JS 相关问题
 
 ##### 一、如何将 JavaScript 中的 JSON 字符串转换为 JSON 对象数组？

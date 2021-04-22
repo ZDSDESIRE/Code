@@ -744,6 +744,105 @@ const forEachRight = (arr, callback) =>
 forEachRight([1, 2, 3, 4], (val) => console.log(val)); // '4', '3', '2', '1'
 ```
 
+**41. forOwn**
+按照给定的函数条件，支持三个参数作为输入（值，键，对象本身），进行迭代对象。
+
+```js
+const forOwn = (obj, fn) =>
+  Object.keys(obj).forEach((key) => fn(obj[key], key, obj));
+
+forOwn({ foo: "bar", a: 1 }, (v) => console.log(v)); // 'bar', 1
+```
+
+**42. functionName**
+输出函数的名字。
+
+```js
+cons functionName = fn => (console.debug(fn.name), fn);
+
+functionName(Math.max); // max (logged in debug channel of console)
+```
+
+**43. getColonTimeFromDate**
+从 Date 对象里获取当前时间。
+
+```js
+const getColonTimeFromDate => date.toTimeString().slice(0,8);
+
+getColonTimeFromDate(new Date()); // "08:24:00"
+```
+
+**44. getDaysDiffBetweenDates**
+返回两个日期之间相差的天数。
+
+```js
+const getDaysDiffBwtweenDates = (dateInitial, dateFinal) => (dateFianl - dateInitial)/(1000*3600*24);
+
+getDaysDiffBetweenDates(new Date('2019-01-13'), new Date('2019-01-15)); // 2
+```
+
+**45. getStyle**
+返回 DOM 元素节点对应的属性值。
+
+```js
+cont getStyle = (el, rulenName) => getComputeStyle(el)[ruleName];
+
+getStyle(document.querySelector('p'), 'font-size'); // '16px'
+```
+
+**46. getType**
+返回数据的类型。
+
+```js
+const getType = (v) =>
+  v === undefined
+    ? "undefined"
+    : v === null
+    ? "null"
+    : v.constructor.name.toLowerCase();
+
+getType(new Set([1, 2, 3])); // 'set'
+```
+
+**47. hasClass**
+返回 DOM 元素是否包含指定的 class 样式。
+
+```js
+const hasClass = (el, className) => el.classList.contains(className);
+
+hasClass(document.querySelector("p.sepecial"), "special"); // true
+```
+
+**48. head**
+输出数组的第一个元素。
+
+```js
+const head = (arr) => arr[0];
+
+head([1, 2, 3]); // 1
+```
+
+**49. hide**
+隐藏指定的 DOM 元素。
+
+```js
+const hide = (...el) => [...el].forEach((e) => (e.style.display = "none"));
+
+hide(document.querySelectorAll("img"));
+```
+
+**50. httpsRedirect**
+重定向 https 网址。
+
+```js
+const httpsRedirect = () => {
+  if (location.protocol !== "https:")
+    localtion.repalace("https://" + location.href.split("//")[1]);
+};
+
+httpsRedirect();
+```
+
 #### JS 相关问题
 
 ##### 一、如何将 JavaScript 中的 JSON 字符串转换为 JSON 对象数组？

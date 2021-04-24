@@ -10,6 +10,18 @@ $ git config --system --unset credential.helper
 
 #### 2、git 仓库管理（本地和远程）
 
+##### 初始化本地 git 存储库
+
+```git
+$ git init
+```
+
+##### 创建远程存储库的本地副本
+
+```git
+$ git clone ssh://git@github.com/[username]/[repository-name].git
+```
+
 ##### git 查看本地仓库缓存区状态（即工作区）
 
 ```git
@@ -105,35 +117,47 @@ $ git remote show origin
 ##### git 新建分支
 
 ```git
-$ git branch <branchName>
+$ git branch <branch name>
 ```
 
 ##### git 切换分支
 
 ```git
-$ git checkout <branchName>
+$ git checkout <branch name>
+```
+
+创建一个新分支并切换到该分支
+
+```git
+$ git checkout -b [branch name]
+```
+
+克隆一个远程分支并切换到该分支
+
+```git
+$ git checkout -b [branch name] origin/[branch name]
 ```
 
 ##### git 删除本地分支
 
 ```git
-$ git branch -d <branchName>
+$ git branch -d <branch name>
 ```
 
 ##### git 删除远程分支
 
 ```git
-$ git push origin -d <branchName>
+$ git push origin -d <branch name>
 # 或者
-$ git push origin --delete <branchName>
+$ git push origin --delete <branch name>
 ```
 
 或
 
 ```git
 # 先删除本地远程分支，后推送至服务器
-$ git branch -d -r <branchname>
-$ git push origin:<branchname>
+$ git branch -d -r <branch name>
+$ git push origin:<branch name>
 ```
 
 ##### git 更新本地分支（远程已删除）
@@ -144,15 +168,26 @@ $ git remote prune origin
 
 ##### git 合并分支
 
+将一个分支合并到活动分支
+
 ```git
-$ git checkout master // 切换回主分支
-$ git merge <branchName>
+$ git merge <branch name>
+```
+
+```git
+$ git merge --no-ff <branch name>
+```
+
+将一个分支合并到目标分支
+
+```git
+$ git merge [source branch] [target branch]
 ```
 
 ##### git 重命名本地分支
 
 ```git
-$ git branch -m <oldbranch> <newbranch>
+$ git branch -m <old branch name> <new branch name>
 ```
 
 #### 4、git 拉取（git fetch & pull）
@@ -205,10 +240,38 @@ $ git pull <远程主机名> <远程分支名>:<本地分支名>
 
 如果需要有选择的合并 git fetch 是更好的选择。效果相同时 git pull 将更为快捷。
 
-#### 5、git 提交
+#### 5、git 文件管理
+
+##### 添加文件至暂存区
+
+将文件添加至暂存区
 
 ```git
-# git commit
+$ git add [file-name.txt]
+```
+
+将所有新文件和更改过的文件添加到暂存区
+
+```git
+$ git add -A
+```
+
+##### 将更改存储在不合适的工作目录中
+
+```git
+$ git stash
+```
+
+##### 移除文件（或文件夹）
+
+```git
+$ git rm -r [file-name.txt]
+```
+
+#### 6、git 提交
+
+```git
+# git commit -m "[commit message]"
 ```
 
 ```git
@@ -220,7 +283,7 @@ $ git commit -F
 
 ##### 注：[Git commit 相关规范](commit.md)
 
-#### 6、git 代码回滚
+#### 7、git 代码回滚
 
 ```git
 $ git reset
@@ -246,7 +309,7 @@ $ git revert
 $ git revert commit_sha1
 ```
 
-#### 7、git 变基
+#### 8、git 变基
 
 ```git
 $ git rebase
@@ -257,16 +320,6 @@ $ git rebase -i git-sha1|branch(HEAD)
 $ git rebase --continue
 $ git rebase --skip
 $ git rebase --abort // 放弃当前
-```
-
-#### 8、git 合并
-
-```git
-$ git merge
-```
-
-```git
-$ git merge --no-ff branchName
 ```
 
 #### 9、git 本地仓库 push 到 github / gitlab 远程仓库

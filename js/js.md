@@ -289,7 +289,7 @@
 
 #### JS 代码片段
 
-##### 一、63 个常用代码片段汇总
+##### 一、62 个常用代码片段汇总
 
 **1. all**
 如果数组所有元素满足函数条件，则返回 true。调用时，如果省略第二个参数，则默认传递布尔值。
@@ -841,6 +841,154 @@ const httpsRedirect = () => {
 };
 
 httpsRedirect();
+```
+
+**51. indexOfAll**
+返回数组中某个值对应的所有索引值，如果不包含该值，则返回一个空数组。
+
+```js
+const indexOfAll = (arr, val) =>
+  arr.reduce((acc, el, i) => (el === val ? [...acc, i] : acc), []);
+
+indexOfAll([1, 2, 3, 1, 2, 3], 1); // [0, 3]
+indexOfAll([1, 2, 3], 4); // []
+```
+
+**52. initial**
+返回数组中除最后一个元素外的所有元素。
+
+```js
+const initial = (arr) => arr.slice(1, -1);
+
+initial([1, 2, 3]); // [1, 2]
+```
+
+**53. insertAfter**
+在给定的 DOM 节点后插入新的节点内容。
+
+```js
+const insertAfter = (el, htmlsString) =>
+  el.insertAdjacentHTML("afterend", htmlString);
+
+insertAfter(document.getElementById("myId"), "<p>after<p/>"); // <div id="myId">...</div> <p>after</p>
+```
+
+**54. insertBefore**
+在给定的 DOM 节点前插入新的节点内容。
+
+```js
+const insertBefore = (el, htmlString) =>
+  el.insertAdjacentHTML("beforebegin", htmlString);
+
+insertBefore(document.getElementById("myId"), "<p>before</p>"); // <p>before</p> <div id="myId">...</div>
+```
+
+**55. intersection**
+返回两个数组元素之间的交集。
+
+```js
+const intersection = (a, b) => {
+  const s = new Set(b);
+  return a.filter((x) => s.has(x));
+};
+
+intersection([1, 2, 3], [4, 3, 2]); // [2, 3]
+```
+
+**56. intersectionBy**
+按照给定的函数处理需要对比的数组元素，然后根据处理后的数组，找出交集，最后从第一个数组中将对应的元素输出。
+
+```js
+const intersectionBy = (a, b, fn) => {
+  const s = new Set(b.map(fn));
+  return a.filter((x) => s.has(fn(x)));
+};
+
+intersectionBy([2.1, 1.2], [2.3, 3.4], Math.floor); // [2.1]
+```
+
+**57. intersectionWith**
+按照给定的函数对比两个数组的差异，然后找出交集，最后从第一个数组中将对应的元素输出。
+
+```js
+const intersectionWith = (a, b, comp) =>
+  a.filter((x) => b.findIndex((y) => comp(x, y)) !== -1);
+
+intersectionWith(
+  [1, 1.2, 1.5, 3, 0],
+  [1.9, 3, 0, 3.9],
+  (a, b) => Math.round(a) === Math.round(b)
+); // [1.5, 3, 0]
+```
+
+**58. is**
+判断数据是否为指定的数据类型，如果是则返回 true。
+
+```js
+const is = (type, val) => ![, null].includes(val) && val.constructor === type;
+
+is(Array, [1]); // true
+is(ArrayBuffer, new ArrayBuffer()); // true
+is(Map, new Map()); // true
+is(RegExp, /./g); // true
+is(Set, new Set()); // true
+is(WeakMap, new WeakMap()); // true
+is(WeakSet, new WeakSet()); // true
+is(String, ""); // true
+is(String, new String("")); // true
+is(Number, 1); // true
+is(Number, new Number(1)); // true
+is(Boolean, true); // true
+is(Boolean, new Boolean(true)); // true
+```
+
+**59. isAfterDate**
+接受两个日期类型的参数，判断前者的日期是否晚于后者。
+
+```js
+const isAfterDate = (dateA, dateB) => dateA > dateB;
+
+isAfterDate(new Date(2010, 10, 21), new Date(2010, 10, 20)); // true
+```
+
+**60. isAnagram**
+检测两个单词是否相似。
+
+```js
+const isAnagram = (str1, str2) => {
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[^a-z0-9]/gi, "")
+      .split("")
+      .sort()
+      .join("");
+  return normalize(str1) === nomalize(str2);
+};
+
+isAnagram("iceman", "cinema"); // true
+```
+
+**61. isArrayLike**
+检测对象是否为类数组对象，是否可迭代。
+
+```js
+const isArrayLike = (obj) =>
+  obj != null && typeof obj[Symbol.iterator] === "function";
+
+isArrayLike(document.querySelectorAll(".className")); // true
+isArrayLike("abc"); // true
+isArrayLike(null); // false
+```
+
+**62. isBoolean**
+检查参数是否为布尔类型。
+
+```js
+const isBoolean = (val) => typeof val === "boolean";
+
+isBoolean(null); // false
+isBoolean(false); // true
 ```
 
 #### JS 相关问题

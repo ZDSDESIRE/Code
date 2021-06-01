@@ -1,6 +1,6 @@
 ### ES6 相关
 
-#### 一、ES6 实用特性
+#### 一、ES6 实用特性（9 个）
 
 1. 展开操作符
    顾名思义，用于对象或数组之前的展开操作符（…），将一个结构展开为列表。
@@ -312,7 +312,7 @@
    export default 关键字则注明仅仅 import 模块时得到的结构。
    在 main.js 中，我们将导入的 default 命名为 mult，同时指明我们引入 add() 和 sub() 这两个方法。箭头函数和字典作用域 this。
 
-#### 二、ES6 实用的代码片段
+#### 二、ES6 实用的代码片段（24 个）
 
 1. 如何隐藏所有指定的元素？
 
@@ -644,3 +644,97 @@
     // Example
     createDirIfNotExists("test"); // creates the directory 'test', if it doesn't exist
     ```
+
+#### 三、ES6 面试题（20 个）
+
+1. ES5 和 ES6 的区别？
+   ECMAScript 5 (ES5)：ECMAScript 的第五版，于 2009 年标准化，该标准已在所有现代浏览器中完全支持。
+   ECMAScript 6 (ES6)/ ECMAScript 2015 (ES2015)：ECMAscript 第 6 版，2015 年标准化。这个标准已经在大多数现代浏览器中部分实现。
+   主要区别如下：
+   **箭头函数和字符串插值**
+
+   ```js
+   const greetings = (name) => {
+     return `hello ${name}`;
+   };
+   // 或写为 const greetings = name => `hello ${name}`;
+   ```
+
+   **const**
+   const 表示无法修改变量的原始值。需要注意的是，const 表示对值的常量引用，咱们可以改变被引用的对象的属性值，但不能改变引用本身。
+
+   ```js
+   const NAMES = [];
+   NAMES.push("Jim");
+   console.log(NAMES.length === 1); // true
+   NAMES = ["Steve", "John"]; // error
+   ```
+
+   **块作用域**
+   ES6 中 let, const 会创建块级作用域，不会像 var 声明变量一样会被提升。
+
+   **默认参数**
+   默认参数使咱们可以使用默认值初始化函数。当参数省略或 undefined 时使用默认参数值。
+
+   ```js
+   function multiply(a, b = 2) {
+     return a * b;
+   }
+   multiply(5); // 10
+   ```
+
+   **类定义与继承**
+   ES6 引入了对类(class 关键字)、构造函数(constructor 关键字)和 extend 关键字(用于继承)的语言支持。
+
+   **for-of 运算符**
+   for...of 语句创建一个遍历可迭代对象的循环。
+
+   **展开操作符**
+
+   ```js
+   const obj1 = { a: 1, b: 2 };
+   const obj2 = { a: 2, c: 3, d: 4 };
+   const obj3 = { ...obj1, ...obj2 };
+   ```
+
+   **Promises**
+   Promises 提供了一种机制来处理异步操作的结果和错误。可以使用回调来完成相同的事情，但是 Promises 通过方法链接和简洁的错误处理来提高可读性。
+
+   ```js
+   const isGreater = (a, b) => {
+     return new Promise((resolve, reject) => {
+       if (a > b) {
+         resolve(true);
+       } else {
+         reject(false);
+       }
+     });
+   };
+   isGreater(1, 2)
+     .then((result) => {
+       console.log("greater");
+     })
+     .catch((result) => {
+       console.log("smaller");
+     });
+   ```
+
+   **模块导出**
+
+   ```js
+   const myModule = {
+     x: 1,
+     y: () => {
+       console.log("This is ES5");
+     },
+   };
+   export default myModule;
+   ```
+
+   **模块导入**
+
+   ```js
+   import myModule from "./myModule";
+   ```
+
+2.

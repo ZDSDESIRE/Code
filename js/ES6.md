@@ -737,4 +737,193 @@
    import myModule from "./myModule";
    ```
 
-2.
+2. 什么是 IIFE (立即调用的函数表达式)？
+   IIFE 是一个立即调用的函数表达式，它在创建后立即执行
+
+   ```js
+   (function IIFE() {
+     console.log("Hello!");
+   })();
+   // "Hello!"
+   ```
+
+   常常使用此模式来避免污染全局命名空间，因为在 IIFE 中使用的所有变量(与任何其他普通函数一样)在其作用域之外都是不可见的。
+
+3. 何时在 ES6 中使用箭头函数？
+   一般地：
+
+   - 在全局作用域内和 Object.prototype 属性中使用 function 。
+   - 为对象构造函数使用 class。
+   - 其它情况使用箭头函数。
+
+   为啥大多数情况都使用箭头函数？
+
+   - **作用域安全性**:当箭头函数被一致使用时，所有东西都保证使用与根对象相同的 thisObject。如果一个标准函数回调与一堆箭头函数混合在一起，那么作用域就有可能变得混乱。
+   - **紧凑性**:箭头函数更容易读写。
+   - **清晰度**:使用箭头函数可明确知道当前 this 指向。
+
+4. 将 Symbol 引入 ES6 的目的是什么？
+   Symbol 是一种新的、特殊的对象，可以用作对象中惟一的属性名。使用 Symbol 替换 string 可以避免不同的模块属性的冲突。还可以将 Symbol 设置为私有，以便尚无直接访问 Symbol 权限的任何人都不能访问它们的属性。
+   Symbol 是 JS 新的基本数据类型。与 number、string 和 boolean 原始类型一样，Symbol 也有一个用于创建它们的函数。与其他原始类型不同，Symbol 没有字面量语法。创建它们的唯一方法是使用以下方法中的 Symbol 构造函数
+
+   ```js
+   let symbol = Symbol();
+   ```
+
+5. 在 ES6 中使用展开(spread)语法有什么好处? 它与剩余(rest)语法有什么不同？
+   ES6 的展开语法在以函数形式进行编码时非常有用，因为咱们可以轻松地创建数组或对象的副本，而无需求助于 Object.create，slice 或库函数。Redux 和 rx.js 项目中经常使用此特性。
+
+   ```js
+   function putDookieInAnyArray(arr) {
+     return [...arr, "dookie"];
+   }
+
+   const result = putDookieInAnyArray(["I", "really", "don't", "like"]);
+   // ["I", "really", "don't", "like", "dookie"]
+
+   const person = {
+     name: "Todd",
+     age: 29,
+   };
+
+   const copyOfTodd = { ...person };
+   ```
+
+   ES6 的 rest 语法提供了一种捷径，其中包括要传递给函数的任意数量的参数。
+   就像展开语法的逆过程一样，它将数据放入并填充到数组中而不是展开数组，并且它在函数变量以及数组和对象解构分中也经常用到。
+
+   ```js
+   function addFiveToABunchOfNumbers(...numbers) {
+     return numbers.map((x) => x + 5);
+   }
+
+   const result = addFiveToABunchOfNumbers(4, 5, 6, 7, 8, 9, 10); // [9, 10, 11, 12, 13, 14, 15]
+
+   const [a, b, ...rest] = [1, 2, 3, 4]; // a: 1, b: 2, rest: [3, 4]
+
+   const { e, f, ...others } = {
+     e: 1,
+     f: 2,
+     g: 3,
+     h: 4,
+   }; // e: 1, f: 2, others: { g: 3, h: 4 }
+   ```
+
+6. ES6 类和 ES5 函数构造函数有什么区别？
+
+   ```js
+   // ES5 Function Constructor
+   function Person(name) {
+     this.name = name;
+   }
+
+   // ES6 Class
+   class Person {
+     constructor(name) {
+       this.name = name;
+     }
+   }
+   ```
+
+   对于简单的构造函数，它们看起来非常相似。
+
+   构造函数的主要区别在于使用继承。如果咱们创建一个继承 Person 类的 Student 子类并添加一个 studentId 字段，以下是两种方式的使用：
+
+   ```js
+   // ES5 Function Constructor
+   function Student(name, studentID) {
+     // 调用你类的构造函数以初始化你类派生的成员。
+     Person.call(this.name);
+     // 初始化子类的成员。
+     this.studentId = studentId;
+   }
+
+   Student.prototype = Object.create(Person.prototype);
+   Student.prototype.constructor = Student;
+
+   // ES6 Class
+   class Student extends Person {
+     constructor(name, studentId) {
+       super(name);
+       this.studentId = studentId;
+     }
+   }
+   ```
+
+   在 ES5 中使用继承要复杂得多，而且 ES6 版本更容易理解和记住。
+
+7. call 和 .apply 区别是啥？
+   .call 和.apply 均用于调用函数，并且第一个参数将用作函数中 this 的值。但是，.call 将逗号分隔的参数作为下一个参数，而.apply 将参数数组作为下一个参数。简单记忆法：C 用于 call 和逗号分隔，A 用于 apply 和参数数组。
+
+   ```js
+   function add(a, b) {
+     return a + b;
+   }
+
+   console.log(add.call(null, 1, 2)); // 3
+   console.log(add.apply(null, [1, 2])); // 3
+   ```
+
+8. 为什么要使用 ES6 类？
+
+   - 语法更简单，更不容易出错。
+   - 使用新语法比使用旧语法更容易(而且更不易出错)地设置继承层次结构。
+   - class 可以避免构造函数中使用 new 的常见错误（如果构造函数不是有效的对象，则使构造函数抛出异常）。
+   - 用新语法调用父原型方法的版本比旧语法要简单得多，用 super.method()代替 ParentConstructor.prototype.method.call(this) 或 Object.getPrototypeOf(Object.getPrototypeOf(this)).method.call(this)
+
+9. 在 JS 中定义枚举的首选语法是什么？
+   可以 Object.freeze 来实现枚举
+
+   ```js
+   var DaysEnum = Object.freeze({
+   "monday": 1,
+   "tuesday": 2,
+   "wednesday": 3,
+   ...
+   })
+   // 或
+   var DaysEnum = {
+   "monday": 1,
+   "tuesday": 2,
+   "wednesday": 3,
+   ...
+   }
+   Object.freeze(DaysEnum)
+   ```
+
+   但是，这阻止咱们把值分配给变量：
+
+   ```js
+   let day = DaysEnum.tuesday;
+   day = 298832342; // 不会报错
+   ```
+
+10. 解释一下 Object.freeze() 和 const 的区别？
+    const 和 Object.freeze 是两个完全不同的概念。
+    const 声明一个只读的变量，一旦声明，常量的值就不可改变：
+
+    ```js
+    const person = {
+      name: "Leonardo",
+    };
+    let animal = {
+      species: "snake",
+    };
+    person = animal; // ERROR "person" is read-only
+    ```
+
+    Object.freeze 适用于值，更具体地说，适用于对象值，它使对象不可变，即不能更改其属性。
+
+    ```js
+    let person = {
+      name: "Leonardo",
+    };
+    let animal = {
+      species: "snake",
+    };
+    Object.freeze(person);
+    person.name = "Lima"; //TypeError: Cannot assign to read only property 'name' of object
+    console.log(person);
+    ```
+
+11.

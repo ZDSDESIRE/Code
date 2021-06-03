@@ -124,12 +124,16 @@ HTML5 应用缓存的最终目的是帮助用户离线浏览页面，换句话�
 
 #### 19、如果把 HTML5 看成一个开放平台，它的构建模块有哪些？
 
-如果把 HTML 看成一个开放平台，它的构建模块至少包括以下几个，如<nav><header><section><footer>。
+如果把 HTML 看成一个开放平台，它的构建模块至少包括以下几个，如
+
+```text
+<nav><header><section><footer>。
 
 <nav>标签用来将具有导航性质的链接划分在一起，使代码结构在语义化方面更加准确
 <header>标签用来定义文档的页眉。
 <section>标签用来描述文档的结构。
 <footer>标签用来定义页脚。在典型情况下，该元素会包含文档作者的姓名、文档的创作日期和联系信息。
+```
 
 #### 20、HTML5 为什么只需要写<!doctype html>？
 
@@ -155,7 +159,7 @@ HTML5 标准提供了很多新的 API，包括 Media API、Text Track API、Appl
 
 Web Worker 的作用如下：
 
-1. 通过 worker=new worker(url)加载一个 JavaScript 文件，创建一个 Worker，同时返回一个 Worker 实例。
+1. 通过 worker = new worker(url)加载一个 JavaScript 文件，创建一个 Worker，同时返回一个 Worker 实例。
 2. 用 worker.postMessage(date)向 Worker 发送数据。
 3. 绑定 worker.onmessage 接受 Worker 发送过来的数据。
 4. 可以使用 worker.terminate()终止一个 worker 的执行。
@@ -186,7 +190,8 @@ sessionStorage 用于在本地存储一个会话中的数据，这些数据只�
 
 #### 29、localStorage 和 cookie 的区别是什么？
 
-localStorage 的概念和 cookie 类似，区别是 localStorage 是为了更大容量的存储设计的。cookie 的大小是受限的，并且每次请求一个新页面时，cookie 都会被发送过去，这样无形中浪费了带宽。另外，cookie 还需要指定作用域，不可以跨域调用。
+localStorage 的概念和 cookie 类似，区别是 localStorage 是为了更大容量的存储设计的。
+cookie 的大小是受限的，并且每次请求一个新页面时，cookie 都会被发送过去，这样无形中浪费了带宽。另外，cookie 还需要指定作用域，不可以跨域调用。
 除此之外，localStorage 拥有 setItem、getItem、removeItem、clear 等方法，cookie 则需要前端开发者自己封装 setCookie 和 getCookie。但 cookie 也是不可或缺的，因为 cookie 的作用是与服务器进行交互，并且还是 HTP 规范的一部分，而 localStorage 仅因为是为了在本地“存储”数据而已，无法跨浏览器使用。
 
 #### 30、请你谈谈 cookie 的特点
@@ -268,3 +273,63 @@ ctx.fill();
 #### 35、本地存储的数据有生命周期吗？
 
 本地存储的数据没有生命周期，它将一直存储数据，知直到用户从浏览器清除或者使用 JavaScript 代码移除。
+
+#### 36、HTML5 中如何实现应用缓存？
+
+首先，需要指定“ manifest”文件，" manifest”文件帮助你定义缓存如何工作以下是“ manifest”文件的结构。
+
+```text
+CACHE MANTEEST
+# version 1.0
+/demo.css
+/demo.js
+/demo.png
+所有manifest文件都以"CACHE MANIFEST"语句开始。
+#（散列标签）有助于提供缓存文件的版本。
+manifest文件的内容类型应是"text/cache-manifest”。
+```
+
+创建一个缓存 manifest 文件后，在 HTML 页面中提供
+manifest 链接，代码如下所示。
+
+```html
+<html manifest="icketang. appcache"></html>
+```
+
+第一次运行以上文件时，它会添加到浏览器应用缓存中，在服务器宕机时，页面从应用缓存中获取数据。
+
+#### 37、如何刷新浏览器的应用缓存？
+
+应用缓存通过变更“#”标签后的版本号来刷新，如下所示：
+
+```text
+CACHE MANIFEST
+# version 2.0
+/icketang.css
+/icketang.js
+/icketang.png
+NETWORK：
+login. php
+```
+
+#### 38、应用缓存中的回退是什么？
+
+应用缓存中的回退会帮助你指定在服务器不可访问时，显示某文件。例如在下面的 manifest 文件中，如果用户输入了“/home”，同时服务器不可到达，“404htm”文件应送达。
+
+```text
+FALLBACK:
+/home//404.html
+```
+
+#### 39、应用缓存中网络命令的作用是什么？
+
+网络命令描述不需要缓存的文件，例如以下代码中“ login.php”始终都不应该缓存或者离线访问。
+
+```text
+NETWORK:
+login.php
+```
+
+#### 40、什么是 Websql？
+
+Websql 是一个在浏览器客户端的结构关系数据库，是浏览器内的本地 RDBMS（关系型数据库管理系统），可以使用 SQL 查询。

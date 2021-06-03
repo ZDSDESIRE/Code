@@ -926,4 +926,185 @@
     console.log(person);
     ```
 
-11.
+11. JS 的提升是什么？
+    提升是指 JS 解释器将所有变量和函数声明移动到当前作用域顶部的操作，提升有两种类型
+
+    - 变量提升
+    - 函数提升
+
+    只要一个 var(或函数声明)出现在一个作用域内，这个声明就被认为属于整个作用域，并且可以在任何地方访问。
+
+    ```js
+    var a = 2;
+    foo(); // 正常运行, foo 已被提升
+    function foo() {
+      a = 3;
+      console.log(a); // 3
+      var a;
+    }
+    console.log(a); // 2
+    ```
+
+12. 解释一下原型设计模式(Prototype Pattern)
+    原型模式会创建新的对象，而不是创建未初始化的对象，它会返回使用从原型或样本对象复制的值进行初始化的对象。原型模式也称为属性模式。
+
+    原型模式有用的一个例子是使用与数据库中的默认值匹配的值初始化业务对象。原型对象保留默认值，这些默认值将被复制到新创建的业务对象中。
+
+    传统语言很少使用原型模式，但是 JavaScript 作为一种原型语言，在构建新对象及其原型时使用这种模式。
+
+13. ES6 中的临时死区是什么？
+    在 ES6 中，let 和 const 跟 var、class 和 function 一样也会被提升，只是在进入作用域和被声明之间有一段时间不能访问它们，这段时间是临时死区(TDZ)。
+
+    ```js
+    // console.log(aLet)  // would throw ReferenceError
+
+    let aLet;
+    console.log(aLet); // undefined
+    aLet = 10;
+    console.log(aLet); // 10
+    ```
+
+14. 什么时候不使用箭头函数?
+    不应该使用箭头函数一些情况：
+
+    - 当想要函数被提升时(箭头函数是匿名的)
+    - 要在函数中使用 this/arguments 时，由于箭头函数本身不具有 this/arguments，因此它们取决于外部上下文
+    - 使用命名函数(箭头函数是匿名的)
+    - 使用函数作为构造函数时(箭头函数没有构造函数)
+    - 当想在对象字面是以将函数作为属性添加并在其中使用对象时，因为咱们无法访问 this 即对象本身。
+
+15. ES6 中的 WeakMap 的实际用途是什么？
+    **WeakMaps** 提供了一种从外部扩展对象而不影响垃圾收集的方法。当咱们想要扩展一个对象，但是因为它是封闭的或者来自外部源而不能扩展时，可以应用 WeakMap。
+    WeakMap 只适用于 ES6 或以上版本。WeakMap 是键和值对的集合，其中键必须是对象。
+
+    ```js
+    var map = new WeakMap();
+    var pavloHero = {
+      first: "Pavlo",
+      last: "Hero",
+    };
+    var gabrielFranco = {
+      first: "Gabriel",
+      last: "Franco",
+    };
+    map.set(pavloHero, "This is Hero");
+    map.set(gabrielFranco, "This is Franco");
+    console.log(map.get(pavloHero)); //This is Hero
+    ```
+
+    WeakMaps 的有趣之处在于，它包含了对 map 内部键的弱引用。弱引用意味着如果对象被销毁，垃圾收集器将从 WeakMap 中删除整个条目，从而释放内存。
+
+16. 说明下列方法为何不能用作 IIFE，要使其成为 IIFE，需要进行哪些更改？
+
+    ```js
+    function foo(){ }();
+    ```
+
+    IIFE 代表立即调用的函数表达式。JS 解析器读取函数 foo(){}();作为函数 foo(){}和();，前者是一个函数声明，后者(一对括号)是尝试调用一个函数，但没有指定名称，因此它抛出 Uncaught SyntaxError: Unexpected token 异常。
+    咱们可以使用 void 操作符:void function foo(){ }();。不幸的是，这种方法有一个问题。给定表达式的求值总是 undefined 的，所以如果 IIFE 函数有返回值，则不能使用它，如下所示：
+
+    ```js
+    const foo = void (function bar() {
+      console.log("前端");
+      return "foo";
+    })();
+    console.log(foo); // undefined
+    ```
+
+17. 能否比较模块模式与构造函数/原型模式的用法？
+    模块模式通常用于命名空间，在该模式中，使用单个实例作为存储来对相关函数和对象进行分组。这是一个不同于原型设计的用例,它们并不是相互排斥,咱们可以同时使用它们(例如，将一个构造函数放在一个模块中，并使用 new MyNamespace.MyModule.MyClass(arguments) )。
+
+    构造函数和原型是实现类和实例的合理方法之一。它们与模型并不完全对应，因此通常需要选择一个特定的 scheme 或辅助方法来实现原型中的类。
+
+18. ES6 Map 和 WeakMap 有什么区别？
+    当它们的键/值引用的对象被删除时，它们的行为都不同，以下面的代码为例:
+
+    ```js
+    var map = new Map();
+    var weakmap = new WeakMap();
+    (function () {
+      var a = {
+        x: 12,
+      };
+      var b = {
+        y: 12,
+      };
+
+      map.set(a, 1);
+      weakmap.set(b, 2);
+    })();
+    ```
+
+    执行上面的 IIFE，就无法再引用{x：12}和{y：12}。垃圾收集器继续运行，并从 WeakMa 中删除键 b 指针，还从内存中删除了{y：12}。
+    但在使用 Map 的情况下，垃圾收集器不会从 Map 中删除指针，也不会从内存中删除{x：12}。
+
+    WeakMap 允许垃圾收集器执行其回收任务，但 Map 不允许。对于手动编写的 Map，数组将保留对键对象的引用，以防止被垃圾回收。但在 WeakMap 中，对键对象的引用被“弱”保留，这意味着在没有其他对象引用的情况下，它们不会阻止垃圾回收。
+
+19. 举一个柯里化函数的例子，并说明柯里化的好处？
+    柯里化是一种模式，其中一个具有多个参数的函数被分解成多个函数，当被串联调用时，这些函数将一次累加一个所需的所有参数。这种技术有助于使用函数式编写的代码更容易阅读和编写。需要注意的是，要实现一个函数，它需要从一个函数开始，然后分解成一系列函数，每个函数接受一个参数。
+
+    ```js
+    function curry(fn) {
+      if (fn.length === 0) {
+        return fn;
+      }
+
+      function _curried(depth, args) {
+        return function (newArgument) {
+          if (depth - 1 === 0) {
+            return fn(...args, newArgument);
+          }
+          return _curried(depth - 1, [...args, newArgument]);
+        };
+      }
+
+      return _curried(fn.length, []);
+    }
+
+    function add(a, b) {
+      return a + b;
+    }
+
+    var curriedAdd = curry(add);
+    var addFive = curriedAdd(5);
+
+    var result = [0, 1, 2, 3, 4, 5].map(addFive); // [5, 6, 7, 8, 9, 10]
+    ```
+
+20. 如何在 JS 中“深冻结”对象？
+    如果咱们想要确保对象被深冻结，就必须创建一个递归函数来冻结对象类型的每个属性。
+    **没有深冻结**
+
+    ```js
+    let person = {
+      name: "Leonardo",
+      profession: {
+        name: "developer",
+      },
+    };
+    Object.freeze(person);
+    person.profession.name = "doctor";
+    console.log(person); //output { name: 'Leonardo', profession: { name: 'doctor' } }
+    ```
+
+    **深冻结**
+
+    ```js
+    function deepFreeze(object) {
+      let propNames = Object.getOwnPropertyNames(object);
+      for (let name of propNames) {
+        let value = object[name];
+        object[name] =
+          value && typeof value === "object" ? deepFreeze(value) : value;
+      }
+      return Object.freeze(object);
+    }
+    let person = {
+      name: "Leonardo",
+      profession: {
+        name: "developer",
+      },
+    };
+    deepFreeze(person);
+    person.profession.name = "doctor"; // TypeError: Cannot assign to read only property 'name' of object
+    ```

@@ -332,4 +332,15 @@ login.php
 
 #### 40、什么是 Websql？
 
-Websql 是一个在浏览器客户端的结构关系数据库，是浏览器内的本地 RDBMS（关系型数据库管理系统），可以使用 SQL 查询。
+Websql 是一个在浏览器客户端的结构关系数据库，是浏览器内的本地 RDBMS（关系型数据库管理系统），可以使用 SQL 查询。其是基于 SQLite 的一个规范，并不属于 HTML5 规范里的内容。
+
+#### 41、HTML5 如何实现跨域？
+
+在服务端设置允许其他域名下的访问，例如允许所有域名访问以下内容：
+
+```html
+response.setHeader（"Access-Control-Allow-Origin"，"*"）； response.setHeader
+（"Access-Control-Allow-Methods"，"POST"）；
+response.setHeader（"Access-Control-Allow-Headers"，"x-requested-with,
+content-type"）；
+```

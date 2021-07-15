@@ -283,7 +283,14 @@
 
    注意：简单数据类型是没有属性和方法的，且简单数据类型的值不可改变，保存复制的是值本身，储存在栈内存；引用数据保存与复制的是一个地址，改变其中一个另一个也会随之改变。
 
-5. 栈内存与堆内存？
+5. typeof 返回值有哪些？
+   number、string、Boolean、undefined、object、function。
+
+   - typeof 字符串 返回 string
+   - typeof null、typeof 对象、typeof 数组 都返回 object
+   - 其他诸如 0、" "、null、false、NaN、undefined 和不成立的表达式，都返回 false。
+
+6. 栈内存与堆内存？
    (1) 内存分配
    在 js 编译阶段，除了声明变量和函数，查找环境中的标识符这两项工作之外，还会进行内存分配。不同类型的数据会分配到不同的内存空间。
 
@@ -311,10 +318,10 @@
    console.log(d); // [5, 1, 2]
    ```
 
-6. 深拷贝与浅拷贝？
+7. 深拷贝与浅拷贝？
 
    - 浅拷贝：可以简单理解为，是发生在栈中的拷贝行为，只能拷贝基本值和引用值的地址。
-     实现方式： ES6 中定义了 Object.assign() 方法来实现浅拷贝。
+     实现方式： ① ES6 中定义了 Object.assign() 方法来实现浅拷贝。
      例子：
 
      ```js
@@ -333,7 +340,7 @@
      console.log(b); // {name: 'Tom', obj: {age: 20}}
      ```
 
-     数组中的 slice()方法也属于浅拷贝。
+     ② 数组中的 slice()方法也属于浅拷贝。
      例子：
 
      ```js
@@ -345,10 +352,28 @@
      console.log(b); // [0, [9]]
      ```
 
-     \*concat()方法也属于浅拷贝。
+     ③ \*concat()方法也属于浅拷贝。
+     ④ 自定义浅拷贝函数
 
-   - 深拷贝：可以简单理解为，同时发生在栈中和堆中的拷贝行为，除了拷贝基本值和引用值的地址之外，地址指向的堆中的对象也会发生拷贝。
-     实现方式：将需要深拷贝的对象序列化为一个 JSON 字符串，然后根据这个字符串解析出一个结构和值完全一样的新对象，可以间接实现深拷贝。
+     ```js
+     // 自定义浅拷贝函数
+     let obj = {
+       name: "zs",
+       age: 18,
+       money: 1000,
+     };
+     function Copy(obj) {
+       let newObj = {};
+       for (let k in obj) {
+         newObj[k] = obj[k];
+       }
+       return newObj;
+     }
+     console.log(Copy(obj));
+     ```
+
+   - 深拷贝：可以简单理解为，同时发生在栈中和堆中的拷贝行为，除了拷贝基本值和引用值的地址之外，地址指向的堆中的对象也会利用递归进行拷贝。
+     实现方式：① 将需要深拷贝的对象序列化为一个 JSON 字符串，然后根据这个字符串解析出一个结构和值完全一样的新对象，可以间接实现深拷贝。
      例子：
 
      ```js
@@ -368,5 +393,350 @@
      ```
 
      注：这种方法需要保证对象是安全的，例如属性值不能是 underfined、symbol、函数、日期和正则。
-     
-7.
+
+     ② jQuery 使用 $.extend() 方法实现深拷贝
+     此并非原生 js 方法，其提供深拷贝的基本思路是：如果是基本值或除了对象和数组之外的引用值，直接赋值；如果是对象或数组就需要进行递归，直到递归到基本值或除了对象和数组之外的引用值为止。
+     如：
+
+     ```js
+     // jquery 中的 $.extend() 代码片段
+     if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray == jQuery.isArray(copy)))) {
+       // 若 copy 的内容是数组或对象，则继续调用 extend() 函数
+       if (copyIsArray) {
+         copyIsArray = false；
+         clone = src && jQuery.isArray(src) ? src: [];
+       } else {
+         clone = src && jQuery.isPlainObject(src) ? src: {};
+       }
+       target[name] = jQuery.extend(deep, clone, copy);
+     } else if (copy != undefined) {
+       target[name] = copy; // 若 copy 的内容不是数组或对象则直接赋值
+     }
+     ```
+
+     ③ 自定义深拷贝函数
+
+     如：
+
+     ```js
+     // 自定义深拷贝函数（参考 $.extend() 方法的实现思路）
+     function extend(source) {
+       var target = Array.isArray(source) ? []: {};
+       for (var key in source) {
+         var isObject = Object.prototype.tostring.call(source[key] === '[Object Object]');
+         if (isObject || Array.isArray(source[key]) {
+           // 如果是对象或数组，则继续调用 extend 函数
+           target[key] = extend(source[key]);
+         } else {
+           // 递归到基本值或除对象和数组之外的引用值，直接赋值
+           target[key] = source[key];
+         }
+       }
+       return target;
+     }
+
+     // 测试代码
+     var a = {
+       a1: undefined,
+       a2: null,
+       a3: 123,
+       a4: false,
+       a5: "Tom",
+       a6: Symbol.for('6'),
+       obj: {
+         s: "book",
+         n: 10
+       },
+       arr: [1, 2, 3, [4]],
+       fn: function() {
+         console.log(999);
+       },
+       now: new Date()
+     }
+
+     var b = extend(a);
+     a.a5 = 'Amy';
+     console.log(a.a5); // "Amy"
+     console.log(b.a5); // "Tom"
+     a.obj.s = 'pen';
+     console.log(a.obj.s); // "pen"
+     console.log(b.obj.s); // "book"
+     a.arr[3][0] = 9999;
+     console.log(a.arr[3][0]); // 9999
+     console.log(b.arr[3][0]); // 4
+     ```
+
+     ```js
+     // 递归方式进行深拷贝
+     let obj = {
+       name: 'zs',
+       age: 18,
+       money: 1000,
+       smoke: {
+         brand: 'suyan',
+         num: 20
+       }
+     }
+     function Copy(obj) {
+       let newObj = {};
+       for (let k in obj) {
+         newObj[k] = typeof obj[k] === 'object' ? Copy[obj[k]] : obj[k];
+       }
+       return newObj；
+     }
+     console.log(Copy(obj)); // 修改 obj 不会影响到 newObj
+     ```
+
+8. 如何检测一个对象是不是数组？
+   (1) Array.isArray() 方法（ES5 新增）
+   此方法接收一个参数，用于确定传递的值是否为一个数组。
+
+   ```js
+   let arr = [1, 2, 3];
+   console.log(Array.isArray(arr)); // true
+   ```
+
+   (2) instanceof 运算符（此方法有一定缺陷）
+   用来检测一个对象在其原型或原型链中是否存在一个构造函数的 prototype 属性，即 arr.\_\_proto\_\_ 属性指向了构造它的构造函数的原型对象 Array.prototype，而 arr.constructor 则指向了构造它的构造函数，arr 实例中没有 constructor 属性，只能在原型链上找，原型链上有 constructor，故 arr.constructor === Array。
+
+   ```js
+   let arr = [1, 2, 3];
+   arr instanceof Array; // true
+   ```
+
+   (3) Object.prototype.tostring()方法
+   借助 Object 原型上的方法来实现数组的检测。
+
+   ```js
+   let arr = [1, 2, 3, 4];
+   console.log(arr.toString()); // "1, 2, 3, 4"
+   console.log(Object.prototype.toString(arr)); // "[object object]"
+   console.log(Object.prototype.toString.call(arr)); // "[object, Array]"
+   ```
+
+9. 自增自减运算符和逻辑运算符
+
+   - ++ 运算符：写在后面叫做后缀自增（先赋值后增），写在前面则叫做前缀自增（先增后赋值）
+
+     ```js
+     let a = 10;
+     let b = ++a + a++;
+     console.log(a); // 12
+     console.log(b); // 22
+     // 分析： ++a 是 a 先加 1 再赋值给自己，此时 a = 11，再加上 11，所以 b = 11 + 11 = 22，而 a++，a 变成了12。（此时运算符优先级：++a > = > a++）
+
+     let a = 5;
+     let b = a++ + ++a + a++;
+     console.loe(a); // 8
+     console.loe(b); // 19
+
+     let a = 10;
+     let b = a-- + ++a;
+     console.log(a); // 10
+     console.log(b); // 20
+     ```
+
+   - -- 运算符：和自增运算符类似
+   - 逻辑运算符
+     - &&：假前后真，全真为真，有一个假即为假
+     - ||：真前假后：全假为假，有一个真即为真
+     - ！：取反，转换为布尔值
+
+10. js 的原型和原型链？
+    js 函数都有 prototype 属性，这个属性是以一个对象，我们称之为原型对象；每一个对象都有\_\_proto\_\_属性，该属性指向了原型对象，原型对象也属于对象，也有\_\_proto\_\_属性，这样一层一层即形成了链式结构，我们称之为原型链。
+
+11. 闭包
+    相互嵌套关系的两个函数，当内部函数引用外部函数的局部变量时就形成了闭包。闭包将会导致原有的作用域不释放，造成内存泄漏。
+
+    - 闭包的优点：形成私有空间，避免全局污染；持久化内存，保存数据
+    - 闭包的缺点：持久化内存导致的内存泄露。（解决办法是尽量避免函数的嵌套；执行完的变量赋值为 null，让垃圾回收机制回收释放内存）
+
+    经典案例（点击 li 获取下标）：
+
+    ```html
+    <ul>
+      <li>111</li>
+      <li>222</li>
+      <li>333</li>
+      <li>444</li>
+      <li>555</li>
+    </ul>
+    <script>
+      var lis = document.querySelectorAll("li");
+      for (var i = 0; i < lis.length; i++) {
+        (function (j) {
+          lis[j].onclick = function () {
+            console.log(j);
+          };
+        })(i);
+      }
+    </script>
+    ```
+
+12. call()、apply()和 bind() 三者的区别与联系？
+    区别与联系：
+
+    - 三者都可以改变函数的 this 对象指向；
+    - 三者第一个参数都是 this 要指向的对象，如果没有这个参数或参数为 null/undefined，都默认指向全局 window。
+    - 三者都可以传参，call 可以有多个参数，而 apply 最多只有两个参数，call 和 apply 除第一参数标识 this 指向外，其他参数（call 传递的是参数列表，而 apply 传递的是数组或伪数组）均作为函数的实参传递给函数。call 和 apply 都是一次性传入参数，bind 可以分多次传入。
+    - call 和 apply 是立即执行函数，而 bind 是创建一个函数副本，并返回绑定 this 指向的新函数，便于稍后调用。
+
+13. 伪数组有哪些？
+
+    - 函数参数列表 arguments
+    - Dom 对象列表 和 childNodes 子节点列表
+    - jQuery 对象，如 $("div")
+
+14. 伪数组和真数组有什么区别？伪数组又如何转换为真数组？
+    区别：
+
+    - 伪数组其实是一个对象，真数组是 Array
+    - 伪数组同样拥有 length 属性，但长度不可以改变，真数组长度可以改变
+    - 伪数组不具备真数组的方法，比如 push、slice 等
+
+    转换：
+
+    - call 借调数组方法
+
+      ```js
+      let obj = { 0: "zs", 1: "ww", 2: "ls", length: 3 };
+      console.log(obj); // {0: "zs", 1: "ww", 2: "ls", length: 3}
+      console.log(Array.prototype.slice.call(obj)); // ["zs", "ww", "ls"]
+      ```
+
+    - ES6 新语法 Array.from 方法从一个类似数组或可迭代对象创建一个新的浅拷贝的数组实例
+
+      ```js
+      let obj = { 0: "zs", 1: "ww", 2: "ls", length: 3 };
+      console.log(obj); // {0: "zs", 1: "ww", 2: "ls", length: 3}
+      console.log(Array.from(obj)); // ["zs", "ww", "ls"]
+      ```
+
+    - ES6 扩展运算符
+
+      ```html
+      <div></div>
+      <div></div>
+      <div></div>
+      <script>
+        let arr = document.querySelectorAll("div");
+        console.log(arr);
+        let newArr = [...arr];
+        console.log(newArr);
+      </script>
+      ```
+
+    注：使用自定义伪数组时，由于缺少遍历器 Iterator，无法通过扩展运算符转换为真数组。
+
+15. 数组的降维（扁平化）处理？
+    对于一层嵌套数组：
+
+    - 借调数组原型上的 concat 方法
+
+      ```js
+      let arr = [1, 2, 3, [4, 5]];
+      console.log(Array.prototype.concat.apply([], arr)); // [1, 2, 3, 4, 5]
+      ```
+
+    - 使用数组的 concat 方法和扩展运算符
+
+      ```js
+      let arr = [1, 2, 3, [4, 5]];
+      console.log([].concat(...arr)); // [1, 2, 3, 4, 5]
+      ```
+
+    对于多层嵌套数组：
+
+    - 利用 Array.some 方法判断数组中是否还存在数组，若存在，再用展开运算符配合 concat 方法连接数组
+
+      ```js
+      let arr = [1, 2, 3, [4, [5, 6]]];
+      while (arr.some((item) => Array.isArray(item))) {
+        arr = [].concat(...arr);
+      }
+      console.log(arr); // [1, 2, 3, 4, 5, 6]
+      ```
+
+    - 利用 ES6 中的 flat 方法（利用该方法中的 Infinity 属性，可以实现多层数组的降维处理）
+
+      ```js
+      let arr = [1, 2, 3, [4, [5, 6]]];
+      console.log(arr.flat(Infinity)); // [1, 2, 3, 4, 5, 6]
+      ```
+
+16. 数组去重的方法有哪些？
+
+    - ES6 的 new Set() + Array.from 或展开运算符（set 方法里内部的值不允许重复）
+
+      ```js
+      let arr = [1, 2, 3, 3, 4, 5, 5, 5, 7];
+      let set = new Set(arr);
+      console.log(set); // Set {1, 2, 3, 4, 5, 7}
+      console.log([...set]); // [1, 2, 3, 4, 5, 7]
+      console.log(Array.from(set)); // [1, 2, 3, 4, 5, 7]
+      ```
+
+    - 数组双重 for 循环遍历 + splice()，或单循环遍历（for in、for of、forEach） + Object 或 includes()
+
+      ```js
+      let arr = [1, 2, 3, 3, 4, 5, 5, 5, 7];
+      let newArr = [];
+      arr.forEach((item) => {
+        if (!newArr.includes(item)) {
+          newArr.push(item);
+        }
+      });
+      console.log(newArr); // [1, 2, 3, 4, 5, 7]
+      ```
+
+    - 利用 Array.sort() 排序，比较相邻元素是否相等，从而排除重复项
+
+      ```js
+      let arr = [1, 2, 3, 3, 4, 5, 5, 5,7];
+      arr.sort((a, b) => a - b));
+      let newArr = [arr[0]];
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[i -1]) {
+          newArr.push(arr[i]);
+        }
+      }
+      console.log(newArr); // [1, 2, 3, 4, 5, 7]
+      ```
+
+    - 利用 Array.filter() + indexOf()
+
+      ```js
+      let arr = [1, 2, 3, 3, 4, 5, 5, 5, 7];
+      let newArr = arr.filter((item, index) => {
+        return arr.indexOf(item) === index;
+      });
+      console.log(newArr); // [1, 2, 3, 4, 5, 7]
+      ```
+
+17. var、const、let 有哪些不同之处？
+
+    - var 声明的变量存在变量提升，let 和 const 的没有
+    - var 可以重复声明同名变量，let 和 const 不可以，会报错
+    - let 和 const 声明变量有块级作用域，var 没有
+    - const 定义的变量是常量，不能被修改，如果是对象或者数组则可以修改或增加属性
+
+18. this 指向问题？
+
+    - 函数调用模式，this 指向 window
+    - 构造函数调用模式，this 指向新创建的实例对象
+    - 方法调用模式，this 指向调用方法的对象
+    - 上下文调用模式，call 和 apply 方法中，this 指向方法内的第一个参数，bind 方法中，其创建新的函数副本中的 this 绑定 bind 方法中的新函数
+    - 在事件处理函数中，this 指向的的触发事件的当前元素
+    - 在定时器中，this 指向的是 window
+    - 在箭头函数中没有 this 指向问题，它的 this 和外层作用域的 this 保持一致
+    - 匿名函数中，this 总是指向 window
+
+19. 面向对象和面向过程有什么区别？
+
+    - 面向对象是一种编程思想，就是把程序看作一个对象，将属性和方法封装其中，以提高代码的灵活性、复用性和可扩展性。
+      面向对象有三大特性：封装、继承、多态。封装指的是把属性和方法储存在对象中的能力；继承指的是由另一个类得来的属性和方法的能力；多态指的是编写能以多种方法运行的函数或方法的能力。
+      面向对象开发的优点是：易维护、易扩展、降低工作量，缩短开发周期；缺点是：性能低。
+    - 面对过程是一种以过程为中心的编程思想，就是把解决问题分为一个一个的步骤，先干什么后干什么，然后用函数把这些步骤一步步实现，使用的时候一个个依次进行调用即可。
+      面向过程的优点是：性能比面对对象高，因为类调用时需要实例化，开销比较大，比较消耗资源；比如单片机、嵌入式开发、Linux/Unix 等一般采用面向过程开发，性能是最重要的因素，缺点是没有面向对象那样易维护、易扩展、易复用。
+
+20.
